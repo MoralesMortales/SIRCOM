@@ -6,5 +6,5 @@ class LoginView(QWidget, Ui_container):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.setWindowTitle("Historial")
+        self.setWindowTitle("Iniciar Sesión")
 
