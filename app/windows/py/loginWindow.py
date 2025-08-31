@@ -17,9 +17,6 @@ else:
 
 userIcon = os.path.join(resources_path,"../", "assets", "icons", "User.png")
 
-print(f"Buscando imagen en: {userIcon}")
-print(f"¿Existe el archivo?: {os.path.exists(userIcon)}")
-
 class Ui_container(object):
     def setupUi(self, container):
         container.setObjectName("container")
