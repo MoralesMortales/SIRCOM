@@ -54,7 +54,7 @@ background-color:&quot;#548687&quot;;
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="15,70,0">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="15,70,15">
      <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
