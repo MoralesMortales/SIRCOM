@@ -1,6 +1,9 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
+from database.init.init import initialize_db
 from views.auth.login import LoginView 
+
+initialize_db()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
