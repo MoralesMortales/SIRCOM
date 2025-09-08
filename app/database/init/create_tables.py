@@ -1,67 +1,59 @@
 import os
-from pathlib import Path
+import sqlite3
 
-import pymysql
-from dotenv import load_dotenv
-
-env_path = Path(__file__).parent.parent.parent.parent / ".env"
-
-load_dotenv(env_path)
-
-HOST = os.getenv("HOST")
-USERNAME = os.getenv("USERNAME")
-DATABASE = os.getenv("DATABASE")
-PASSWORD = os.getenv("PASSWORD")
-CHARSET = os.getenv("CHARSET")
+DB_PATH = os.getenv("DB_PATH", "app/database/database.db")
 
 
 def create_tables():
-    connection = pymysql.connect(
-        host=HOST,
-        user=USERNAME,
-        database=DATABASE,
-        password=PASSWORD,
-        charset=CHARSET,
-    )
-    connection_cursor = connection.cursor()
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        connection_cursor = connection.cursor()
 
-    sql_statements = [
-        """CREATE TABLE `productos` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `nombre` varchar(255) DEFAULT NULL,
-      `descripcion` text DEFAULT NULL,
-      `stock` int(11) DEFAULT NULL,
-      PRIMARY KEY (`id`)
-    );""",
-        """CREATE TABLE `proveedores` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `nombre` varchar(255) DEFAULT NULL,
-      PRIMARY KEY (`id`)
-    );""",
-        """CREATE TABLE `entradas` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `producto_id` int(11) DEFAULT NULL,
-      `cantidad` int(11) DEFAULT NULL,
-      `proveedor` varchar(255) DEFAULT NULL,
-      `fecha` date DEFAULT NULL,
-      PRIMARY KEY (`id`),
-      KEY `producto_id` (`producto_id`),
-      CONSTRAINT `entradas_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`)
-    );""",
-        """CREATE TABLE `salidas` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `producto_id` int(11) DEFAULT NULL,
-      `cantidad` int(11) DEFAULT NULL,
-      `cliente` varchar(255) DEFAULT NULL,
-      `fecha` date DEFAULT NULL,
-      PRIMARY KEY (`id`),
-      KEY `producto_id` (`producto_id`),
-      CONSTRAINT `salidas_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`)
-    );""",
-    ]
+        sql_statements = [
+            """CREATE TABLE IF NOT EXISTS productos (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nombre TEXT,
+          descripcion TEXT,
+          stock INTEGER
+        );""",
+            """CREATE TABLE IF NOT EXISTS proveedores (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nombre TEXT
+        );""",
+            """CREATE TABLE IF NOT EXISTS clientes (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nombre TEXT
+        );""",
+            """CREATE TABLE IF NOT EXISTS entradas (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          producto_id INTEGER,
+          cantidad INTEGER,
+          proveedor TEXT,
+          fecha DATE,
+          FOREIGN KEY (producto_id) REFERENCES productos (id)
+        );""",
+            """CREATE TABLE IF NOT EXISTS salidas (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          producto_id INTEGER,
+          cantidad INTEGER,
+          cliente TEXT,
+          fecha DATE,
+          FOREIGN KEY (producto_id) REFERENCES productos (id)
+        );""",
+        ]
 
-    for statement in sql_statements:
-        connection_cursor.execute(statement)
+        for statement in sql_statements:
+            connection_cursor.execute(statement)
 
-    print("Las tablas y datos han sido creados correctamente.")
-    connection.commit()
+        print("Las tablas y datos han sido creados correctamente.")
+        connection.commit()
+
+    except sqlite3.Error as e:
+        print(f"Error al configurar la base de datos: {e}")
+        if connection:
+            connection.rollback()
+
+    finally:
+        if connection:
+            connection.close()
+            connection.close()

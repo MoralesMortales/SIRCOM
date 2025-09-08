@@ -1,7 +1,7 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
 from database.init.init import initialize_db
-from views.auth.login import LoginView 
+from views.auth.LoginView import LoginView 
 
 initialize_db()
 
