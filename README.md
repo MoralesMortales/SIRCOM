@@ -1,3 +1,3 @@
 # Inventory_exe
 
-### This readme act. doesnt do anything
+### This readmy act doesnt do anything.

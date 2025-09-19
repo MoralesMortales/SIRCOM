@@ -2,9 +2,9 @@ name: CI/CD for Windows Pipeline
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ root, master ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ root, master ]
   release:
     types: [created]
 
