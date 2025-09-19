@@ -75,7 +75,7 @@ jobs:
       timeout-minutes: 10
     
     - name: Upload executable as artifact
-      uses: actions/upload-artifact@v4  # ✅ VERSION CORRECTA
+      uses: actions/upload-artifact@v4
       with:
         name: SistemaInventario-Windows
         path: dist/SistemaInventario.exe
