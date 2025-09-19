@@ -2,9 +2,9 @@ name: CI/CD for Windows Pipeline
 
 on:
   push:
-    branches: [ root, master ]
+    branches: [root, master]
   pull_request:
-    branches: [ root, master ]
+    branches: [root, master]
   release:
     types: [created]
 
@@ -16,7 +16,8 @@ jobs:
       matrix:
         os: [windows-latest]
         python-version: ['3.9', '3.10', '3.11']
-    
+    timeout-minutes: 15
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -31,12 +32,21 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        #pip install pytest      
+        pip install pytest
 
-    - name: Test imports
+    - name: Test PyQt imports
       run: |
         python -c "from PyQt5 import QtWidgets, QtCore; print('PyQt imports successful')"
     
+    - name: Run quick smoke tests
+      run: |
+        python -c "
+        from main import InventorySystem
+        app = InventorySystem()
+        print('App initialized successfully')
+        "
+      timeout-minutes: 3
+
   build-windows-exe:
     name: Build Windows Executable
     runs-on: windows-latest
@@ -62,18 +72,19 @@ jobs:
     - name: Build executable
       run: |
         pyinstaller --onefile --windowed --name "SistemaInventario" main.py
+      timeout-minutes: 10
     
     - name: Upload executable as artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4  # ✅ VERSION CORRECTA
       with:
-        name: windows-executable
-        path: dist/
-        retention-days: 5
+        name: SistemaInventario-Windows
+        path: dist/SistemaInventario.exe
+        retention-days: 7
     
     - name: Upload to release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: dist/*.exe
+        files: dist/SistemaInventario.exe
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
