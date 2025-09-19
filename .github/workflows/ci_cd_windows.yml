@@ -45,8 +45,8 @@ jobs:
     if: github.event_name == 'release'
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
+    # - name: Checkout code
+    #   uses: actions/checkout@v5
     
     - name: Set up Python
       uses: actions/setup-python@v6
