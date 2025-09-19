@@ -1,11 +1,17 @@
 import os
+import sys
 from pathlib import Path
+current_file = Path(__file__).resolve()
+project_root = current_file.parent.parent.parent
+sys.path.append(str(project_root))
+
 import sqlite3
-from database.init.create_tables import create_tables
+from app.database.connect import connectDB
+from app.database.init.create_tables import create_tables
+
+DB_PATH = os.getenv("DB_PATH", "app/database/database.db")
 
 def database_exist():
-
-    DB_PATH = os.getenv("DB_PATH", "app/database/database.db")
 
     connection = None
 
@@ -14,8 +20,7 @@ def database_exist():
         
         if not db_file.exists():
             print(f"La base de datos '{DB_PATH}' no existe. Creándola...")
-            
-            connection = sqlite3.connect(DB_PATH)
+            connection = connectDB()
             connection.close()
             
             print(f"La base de datos ha sido creada exitosamente.")
@@ -25,7 +30,7 @@ def database_exist():
         else:
             print(f"La base de datos ya existe.")
             
-            connection = sqlite3.connect(DB_PATH)
+            connection = connectDB()
             cursor = connection.cursor()
             
             cursor.execute("SELECT * FROM sqlite_master ")

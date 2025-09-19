@@ -1,12 +1,20 @@
 import os
 import sqlite3
 
+import sys
+from pathlib import Path
+current_file = Path(__file__).resolve()
+project_root = current_file.parent.parent.parent
+sys.path.append(str(project_root))
+
+from app.database.connect import connectDB
+
 DB_PATH = os.getenv("DB_PATH", "app/database/database.db")
 
 
 def create_tables():
     try:
-        connection = sqlite3.connect(DB_PATH)
+        connection = connectDB()
         connection_cursor = connection.cursor()
 
         sql_statements = [
@@ -15,6 +23,11 @@ def create_tables():
           nombre TEXT,
           descripcion TEXT,
           stock INTEGER
+        );""",
+            """CREATE TABLE IF NOT EXISTS usuarios (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          cedula TEXT,
+          clave TEXT
         );""",
             """CREATE TABLE IF NOT EXISTS proveedores (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,6 +53,7 @@ def create_tables():
           fecha DATE,
           FOREIGN KEY (producto_id) REFERENCES productos (id)
         );""",
+            """INSERT INTO usuarios (cedula, clave) VALUES ("31034825", "12345678")"""
         ]
 
         for statement in sql_statements:
@@ -55,5 +69,4 @@ def create_tables():
 
     finally:
         if connection:
-            connection.close()
             connection.close()
