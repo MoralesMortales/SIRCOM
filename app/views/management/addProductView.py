@@ -1,11 +1,10 @@
 from PyQt5.QtWidgets import QWidget
-from windows.py.addProductWindow import Ui_container
+from app.windows.py.newProductWds import Ui_Form
 
-class addProductView(QWidget, Ui_container):
+class addProductView(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.setWindowTitle("pepe")
-        print("holsa")
 
 
