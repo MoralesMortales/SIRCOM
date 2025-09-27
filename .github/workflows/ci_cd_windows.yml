@@ -45,7 +45,7 @@ jobs:
     needs: test 
     strategy:
       matrix:
-        python-version: ['3.9', '3.10', '3.11']
+        python-version: ['3.11']
     
     permissions:
       contents: write 
@@ -106,7 +106,7 @@ jobs:
     needs: build-windows-exe 
     strategy:
       matrix:
-        python-version: ['3.9', '3.10', '3.11']
+        python-version: ['3.11']
     
     steps:
       - name: Download EXE artifact
