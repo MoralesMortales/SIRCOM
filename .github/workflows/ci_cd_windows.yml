@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.9', '3.10', '3.11']
-    timeout-minutes: 5 # Timeout ajustado
+    timeout-minutes: 5
     
     steps:
       - name: Checkout code
@@ -37,20 +37,16 @@ jobs:
         run: |
           echo "Verificando imports esenciales y que PyQt5 se cargue correctamente..."
           python -c "import sys; print('Python OK')"
-          # Esta línea confirma que todas las dependencias de GUI se instalaron.
           python -c "from PyQt5 import QtWidgets, QtCore; print('PyQt5 OK')"
-          
-          # La ejecución de 'python main.py' ha sido movida al job 'test-built-exe' 
-          # donde se puede controlar con el flag --ci-test.
 
 ---
 
-  # 2. BUILD: Construye el EXE final (Solo se ejecuta en 'release')
+  # 2. BUILD: Construye el EXE final (Se ejecuta en PUSH/PR y Release)
   build-windows-exe:
-    name: Build Windows Executable and Upload
+    name: Build Windows Executable
     runs-on: windows-latest
     needs: test 
-    if: github.event_name == 'release'
+    # 🔑 FIX: Eliminamos la cláusula 'if: github.event_name == 'release'' para que corra siempre.
 
     permissions:
       contents: write 
@@ -75,12 +71,10 @@ jobs:
         id: build_exe
         run: |
           $ExeName = "SistemaInventario.exe"
-          # Usamos --windowed ya que es una GUI
           pyinstaller --onefile --windowed --clean --name "SistemaInventario" `
                       --log-level=INFO `
                       main.py
           
-          # Verificación de que el EXE se creó y obtención de ruta para el output
           $ExePath = "dist/$ExeName"
           if (Test-Path $ExePath) {
               echo "✅ Build exitoso: $ExePath"
@@ -91,20 +85,22 @@ jobs:
           }
         shell: pwsh
       
-      - name: Upload executable to GitHub Release 🚀
-        uses: softprops/action-gh-release@v2
-        if: steps.build_exe.outputs.exe_path != ''
-        with:
-          files: ${{ steps.build_exe.outputs.exe_path }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      # 💡 Nuevo paso: Subir el EXE como artefacto para el siguiente job, incluso si NO es un Release.
       - name: Upload executable as artifact (For the next job to download)
         uses: actions/upload-artifact@v4
         with:
           name: SistemaInventario-Windows
           path: ${{ steps.build_exe.outputs.exe_path }}
           retention-days: 7
+          
+      - name: Upload to GitHub Release (Conditional) 🚀
+        # 🔑 CLAVE: Mantenemos la condición 'if' solo en este paso.
+        if: github.event_name == 'release' && steps.build_exe.outputs.exe_path != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.build_exe.outputs.exe_path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
 ---
 
@@ -113,7 +109,7 @@ jobs:
     name: Test Built Executable Integrity
     runs-on: windows-latest
     needs: build-windows-exe 
-    if: github.event_name == 'release'
+    # 🔑 FIX: Eliminamos la cláusula 'if: github.event_name == 'release'' para que corra siempre.
 
     steps:
       - name: Download EXE artifact
@@ -132,8 +128,7 @@ jobs:
           
           echo "✅ Ejecutando prueba de integridad silenciosa (usando --ci-test)..."
           
-          # 🔑 CLAVE: Usamos el argumento --ci-test. El EXE ahora se ejecutará,
-          # inicializará la DB, imprimirá el mensaje de salida y cerrará inmediatamente.
+          # La prueba silenciosa solo funcionará si 'main.py' contiene el bloque 'if "--ci-test" in sys.argv:'
           $process = Start-Process -FilePath $ExePath -ArgumentList "--ci-test" -Wait -PassThru -NoNewWindow
           $ExitCode = $process.ExitCode
           
