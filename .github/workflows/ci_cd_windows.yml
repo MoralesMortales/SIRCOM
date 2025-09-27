@@ -40,8 +40,7 @@ jobs:
           echo "Verificando imports y funcionalidad sin GUI..."
           python -c "import sys; print('Python OK')"
           python -c "from PyQt5 import QtWidgets; print('PyQt5 OK')"
-          # Ejecutar el script con un argumento de CLI que fuerce la salida (NO ejecutar la GUI)
-          python main.py --version || python main.py --help || echo "Script ejecutado con éxito."
+          
 
 ---
 
