@@ -9,14 +9,14 @@ on:
     types: [created]
 
 jobs:
-  # 1. TEST: Solo prueba el código Python y las dependencias (rápido y estable)
+  # 1. TEST: Prueba del código fuente y dependencias (estable y rápido)
   test:
     name: Compatibility Tests - Python ${{ matrix.python-version }}
     runs-on: windows-latest
     strategy:
       matrix:
         python-version: ['3.9', '3.10', '3.11']
-    timeout-minutes: 5 # Reducido, ya que solo hace pruebas de código
+    timeout-minutes: 5 # Timeout ajustado
     
     steps:
       - name: Checkout code
@@ -26,21 +26,22 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'pip' # Usa caché para acelerar dependencias
+          cache: 'pip' 
       
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          # Instalamos PyInstaller solo si realmente lo necesitamos para un test específico (opcional)
-          # pip install pyinstaller
       
-      - name: Test basic functionality (Python Only)
+      - name: Test basic imports (Verifica compatibilidad con PyQt5)
         run: |
-          echo "Verificando imports y funcionalidad sin GUI..."
+          echo "Verificando imports esenciales y que PyQt5 se cargue correctamente..."
           python -c "import sys; print('Python OK')"
-          python -c "from PyQt5 import QtWidgets; print('PyQt5 OK')"
+          # Esta línea confirma que todas las dependencias de GUI se instalaron.
+          python -c "from PyQt5 import QtWidgets, QtCore; print('PyQt5 OK')"
           
+          # La ejecución de 'python main.py' ha sido movida al job 'test-built-exe' 
+          # donde se puede controlar con el flag --ci-test.
 
 ---
 
@@ -48,11 +49,11 @@ jobs:
   build-windows-exe:
     name: Build Windows Executable and Upload
     runs-on: windows-latest
-    needs: test # Asegura que la compilación solo corra si todos los tests pasan
+    needs: test 
     if: github.event_name == 'release'
 
     permissions:
-      contents: write # Requerido para subir el asset a la Release
+      contents: write 
     
     steps:
       - name: Checkout code
@@ -61,7 +62,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10' # Versión fija para el build final
+          python-version: '3.10'
           cache: 'pip'
       
       - name: Install PyInstaller and dependencies
@@ -74,11 +75,12 @@ jobs:
         id: build_exe
         run: |
           $ExeName = "SistemaInventario.exe"
+          # Usamos --windowed ya que es una GUI
           pyinstaller --onefile --windowed --clean --name "SistemaInventario" `
                       --log-level=INFO `
                       main.py
           
-          # Verificar y subir ruta como output para el siguiente paso
+          # Verificación de que el EXE se creó y obtención de ruta para el output
           $ExePath = "dist/$ExeName"
           if (Test-Path $ExePath) {
               echo "✅ Build exitoso: $ExePath"
@@ -106,11 +108,11 @@ jobs:
           
 ---
 
-  # 3. VERIFY: Prueba el ejecutable recién creado descargándolo como artefacto (estable)
+  # 3. VERIFY: Prueba el ejecutable final de forma segura
   test-built-exe:
-    name: Test Built Executable
+    name: Test Built Executable Integrity
     runs-on: windows-latest
-    needs: build-windows-exe # Necesita que el build haya terminado
+    needs: build-windows-exe 
     if: github.event_name == 'release'
 
     steps:
@@ -118,23 +120,27 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: SistemaInventario-Windows
-          # La ruta de descarga será 'SistemaInventario-Windows/SistemaInventario.exe'
           
-      - name: Test EXE functionality (Safer approach)
+      - name: Test EXE functionality (Silent Check) ✅
         run: |
           $ExePath = "SistemaInventario-Windows/SistemaInventario.exe"
-          if (Test-Path $ExePath) {
-              echo "✅ EXE descargado correctamente"
-              
-              # Intenta ejecutar la GUI y espera un corto tiempo para ver si arranca sin error crítico.
-              # Usar -NoNewWindow puede ser más estable que Start-Process solo
-              & $ExePath
-              
-              echo "✅ EXE ejecutado. Si fallara, el runner habría detenido este job."
-              # NOTA: Si el EXE tiene un bug en el inicio, este paso fallará. 
-              # Si es una GUI, se cerrará después del timeout del job si no se cierra por código.
-              
-          } else {
-              echo "❌ No se pudo encontrar el EXE en $ExePath"
+          
+          if (!(Test-Path $ExePath)) {
+              echo "❌ EXE no encontrado en $ExePath"
               exit 1
           }
+          
+          echo "✅ Ejecutando prueba de integridad silenciosa (usando --ci-test)..."
+          
+          # 🔑 CLAVE: Usamos el argumento --ci-test. El EXE ahora se ejecutará,
+          # inicializará la DB, imprimirá el mensaje de salida y cerrará inmediatamente.
+          $process = Start-Process -FilePath $ExePath -ArgumentList "--ci-test" -Wait -PassThru -NoNewWindow
+          $ExitCode = $process.ExitCode
+          
+          if ($ExitCode -eq 0) {
+              echo "✅ EXE ejecutado, prueba de integridad silenciosa OK (Código 0)."
+          } else {
+              echo "❌ EXE falló la prueba silenciosa. Código de salida: $ExitCode. Esto significa que initialize_db() o un import falló dentro del ejecutable."
+              exit 1
+          }
+        shell: pwsh
