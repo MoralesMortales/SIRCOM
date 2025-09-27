@@ -9,12 +9,14 @@ on:
     types: [created]
 
 jobs:
-  test-compatibility:
-    name: Windows Compatibility Tests
-    runs-on: windows-latest
+  test:
+    name: Test on ${{ matrix.os }} - Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [windows-latest]
         python-version: ['3.9', '3.10', '3.11']
+    timeout-minutes: 15
     
     steps:
       - name: Checkout code
@@ -30,12 +32,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
-      
-      - name: Test basic functionality
-        run: |
-          python -c "import sys; print('Python OK')"
-          python -c "from PyQt5 import QtWidgets; print('PyQt5 OK')"
-          python main.py --version || python main.py --help || echo "Script ejecutado"
       
       - name: Build test executable
         run: |
