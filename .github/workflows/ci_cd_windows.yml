@@ -19,91 +19,91 @@ jobs:
     timeout-minutes: 15
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v6
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: 'pip'
-    
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        # Instala dependencias del proyecto, incluyendo PyQt5
-        pip install -r requirements.txt
-        pip install pytest
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Instala dependencias del proyecto, incluyendo PyQt5
+          pip install -r requirements.txt
+          pip install pytest
 
-    - name: Test PyQt imports
-      run: |
-        python -c "from PyQt5 import QtWidgets, QtCore; print('PyQt imports successful')"
-    
+      - name: Test PyQt imports
+        run: |
+          python -c "from PyQt5 import QtWidgets, QtCore; print('PyQt imports successful')"
+      
   build-windows-exe:
     name: Build Windows Executable and Upload
     runs-on: windows-latest
     needs: test # Asegura que la compilación solo corra si los tests pasan
-    if: github.event_name == 'release' # Solo corre si el evento que lo disparó es un 'release'
+    if: github.event_name == 'release'
+
+    # 🔑 CLAVE: OTORGA PERMISOS DE ESCRITURA PARA EL TOKEN DE ESTE JOB
+    permissions:
+      contents: write # Permite al GITHUB_TOKEN modificar assets de la release
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-    
-    - name: Set up Python
-      uses: actions/setup-python@v6
-      with:
-        # Usa una versión de Python compatible con tu build, o la que uses en el entorno de desarrollo
-        python-version: '3.10' 
-        cache: 'pip'
-    
-    - name: Install PyInstaller and dependencies
-      run: |
-        python -m pip install --upgrade pip
-        # Instala todas las dependencias del proyecto (incluyendo PyQt5)
-        pip install -r requirements.txt
-        # Instala PyInstaller para la compilación
-        pip install pyinstaller
-    
-    - name: Build executable
-      # Adaptado para usar el shell de Windows (PowerShell/CMD) en vez de Bash de Linux.
-      # Ya que runs-on es 'windows-latest', se ejecuta en PowerShell por defecto.
-      # Usaremos PyInstaller con las opciones estándar para una GUI (PyQt5)
-      run: |
-        Write-Host "Iniciando build con PyInstaller..."
-        # Si tienes un archivo .spec personalizado, úsalo aquí: pyinstaller your_app.spec
-        # Si usas el comando directo:
-        pyinstaller --onefile --windowed --name "SistemaInventario" main.py
-        Write-Host "Build completado. Contenido de dist/:"
-        Get-ChildItem -Path dist
-      timeout-minutes: 10
-      shell: pwsh # Asegura usar PowerShell para los comandos de Windows
+      - name: Checkout code (usando el código de la etiqueta de la release)
+        uses: actions/checkout@v4
+        # Si insistes en usar el código de la rama 'main' más reciente, descomenta la siguiente línea:
+        # with:
+        #   ref: master 
 
-    - name: Find and Verify Executable Path
-      # Este paso identifica y exporta la ruta exacta del .exe
-      id: find_exe
-      shell: bash # Usamos bash (que está disponible en el runner de Windows) para simplificar el find
-      run: |
-        EXE_NAME="SistemaInventario.exe"
-        EXE_PATH=$(find dist/ -name "$EXE_NAME" | head -n 1)
-        if [ -z "$EXE_PATH" ]; then
-          echo "Error: $EXE_NAME no encontrado en dist/"
-          exit 1
-        fi
-        echo "exe_path=$EXE_PATH" >> "$GITHUB_OUTPUT"
-        echo "✅ EXE encontrado en: $EXE_PATH"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      
+      - name: Install PyInstaller and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+      
+      - name: Build executable
+        run: |
+          Write-Host "Iniciando build con PyInstaller..."
+          pyinstaller --onefile --windowed --name "SistemaInventario" main.py
+          Write-Host "Build completado. Contenido de dist/:"
+          Get-ChildItem -Path dist
+        timeout-minutes: 10
+        shell: pwsh
 
-    - name: Upload executable to GitHub Release 🚀
-      uses: softprops/action-gh-release@v2
-      # Ya que el 'if' principal del job es 'release', no necesitamos otro 'if' aquí, pero es buena práctica:
-      if: steps.find_exe.outputs.exe_path != '' 
-      with:
-        files: ${{ steps.find_exe.outputs.exe_path }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Find and Verify Executable Path
+        id: find_exe
+        shell: bash
+        run: |
+          EXE_NAME="SistemaInventario.exe"
+          # Esto manejará la diferencia de path en caso de onefile/onedir
+          EXE_PATH=$(find dist/ -type f -name "$EXE_NAME" | head -n 1) 
+          if [ -z "$EXE_PATH" ]; then
+            echo "Error: $EXE_NAME no encontrado en dist/"
+            exit 1
+          fi
+          echo "exe_path=$EXE_PATH" >> "$GITHUB_OUTPUT"
+          echo "✅ EXE encontrado en: $EXE_PATH"
 
-    - name: Upload executable as artifact 
-      uses: actions/upload-artifact@v4
-      with:
-        name: SistemaInventario-Windows-${{ github.event.release.tag_name }}
-        path: ${{ steps.find_exe.outputs.exe_path }}
-        retention-days: 7
+      - name: Upload executable to GitHub Release 🚀
+        uses: softprops/action-gh-release@v2
+        if: steps.find_exe.outputs.exe_path != ''
+        with:
+          # files: usa la ruta relativa del archivo
+          files: ${{ steps.find_exe.outputs.exe_path }}
+          # Usar el GITHUB_TOKEN proporcionado por el runner (que ahora tiene permisos de escritura)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload executable as artifact # Esto es opcional, solo para ver el archivo en Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SistemaInventario-Windows-${{ github.event.release.tag_name }}
+          path: ${{ steps.find_exe.outputs.exe_path }}
+          retention-days: 7
