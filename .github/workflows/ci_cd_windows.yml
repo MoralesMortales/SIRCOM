@@ -9,7 +9,7 @@ on:
     types: [created]
 
 jobs:
-  # 1. TEST: Prueba del código fuente y dependencias (estable y rápido)
+  # 1. TEST: Prueba del código fuente y dependencias
   test:
     name: Compatibility Tests - Python ${{ matrix.python-version }}
     runs-on: windows-latest
@@ -33,21 +33,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Test basic imports (Verifica compatibilidad con PyQt5)
+      - name: Test basic imports
         run: |
-          echo "Verificando imports esenciales y que PyQt5 se cargue correctamente..."
           python -c "import sys; print('Python OK')"
           python -c "from PyQt5 import QtWidgets, QtCore; print('PyQt5 OK')"
 
----
-
-  # 2. BUILD: Construye el EXE final (Se ejecuta en PUSH/PR y Release)
+  # 2. BUILD: Construye el EXE final
   build-windows-exe:
-    name: Build Windows Executable
+    name: Build Windows Executable - Python ${{ matrix.python-version }}
     runs-on: windows-latest
     needs: test 
-    # 🔑 FIX: Eliminamos la cláusula 'if: github.event_name == 'release'' para que corra siempre.
-
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11']
+    
     permissions:
       contents: write 
     
@@ -55,10 +54,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: ${{ matrix.python-version }}
           cache: 'pip'
       
       - name: Install PyInstaller and dependencies
@@ -70,12 +69,12 @@ jobs:
       - name: Build executable
         id: build_exe
         run: |
-          $ExeName = "SistemaInventario.exe"
-          pyinstaller --onefile --windowed --clean --name "SistemaInventario" `
+          $ExeName = "SistemaInventario-Py${{ matrix.python-version }}.exe"
+          pyinstaller --onefile --windowed --clean --name "SistemaInventario-Py${{ matrix.python-version }}" `
                       --log-level=INFO `
                       main.py
           
-          $ExePath = "dist/$ExeName"
+          $ExePath = "dist/SistemaInventario-Py${{ matrix.python-version }}.exe"
           if (Test-Path $ExePath) {
               echo "✅ Build exitoso: $ExePath"
               echo "exe_path=$ExePath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
@@ -85,57 +84,52 @@ jobs:
           }
         shell: pwsh
       
-      # 💡 Nuevo paso: Subir el EXE como artefacto para el siguiente job, incluso si NO es un Release.
-      - name: Upload executable as artifact (For the next job to download)
+      - name: Upload executable as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SistemaInventario-Windows
+          name: SistemaInventario-Py${{ matrix.python-version }}
           path: ${{ steps.build_exe.outputs.exe_path }}
           retention-days: 7
           
-      - name: Upload to GitHub Release (Conditional) 🚀
-        # 🔑 CLAVE: Mantenemos la condición 'if' solo en este paso.
+      - name: Upload to GitHub Release (Conditional)
         if: github.event_name == 'release' && steps.build_exe.outputs.exe_path != ''
         uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.build_exe.outputs.exe_path }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
----
 
-  # 3. VERIFY: Prueba el ejecutable final de forma segura
+  # 3. VERIFY: Prueba el ejecutable final
   test-built-exe:
-    name: Test Built Executable Integrity
+    name: Test Built Executable - Python ${{ matrix.python-version }}
     runs-on: windows-latest
     needs: build-windows-exe 
-    # 🔑 FIX: Eliminamos la cláusula 'if: github.event_name == 'release'' para que corra siempre.
-
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11']
+    
     steps:
       - name: Download EXE artifact
         uses: actions/download-artifact@v4
         with:
-          name: SistemaInventario-Windows
+          name: SistemaInventario-Py${{ matrix.python-version }}
           
-      - name: Test EXE functionality (Silent Check) ✅
+      - name: Test EXE functionality
         run: |
-          $ExePath = "SistemaInventario-Windows/SistemaInventario.exe"
+          $ExePath = "SistemaInventario-Py${{ matrix.python-version }}.exe"
           
           if (!(Test-Path $ExePath)) {
               echo "❌ EXE no encontrado en $ExePath"
               exit 1
           }
           
-          echo "✅ Ejecutando prueba de integridad silenciosa (usando --ci-test)..."
-          
-          # La prueba silenciosa solo funcionará si 'main.py' contiene el bloque 'if "--ci-test" in sys.argv:'
+          echo "✅ Probando EXE built with Python ${{ matrix.python-version }}"
           $process = Start-Process -FilePath $ExePath -ArgumentList "--ci-test" -Wait -PassThru -NoNewWindow
-          $ExitCode = $process.ExitCode
           
-          if ($ExitCode -eq 0) {
-              echo "✅ EXE ejecutado, prueba de integridad silenciosa OK (Código 0)."
+          if ($process.ExitCode -eq 0) {
+              echo "✅ EXE Python ${{ matrix.python-version }} - Prueba OK"
           } else {
-              echo "❌ EXE falló la prueba silenciosa. Código de salida: $ExitCode. Esto significa que initialize_db() o un import falló dentro del ejecutable."
+              echo "❌ EXE Python ${{ matrix.python-version }} - Falló. Código: $process.ExitCode"
               exit 1
           }
         shell: pwsh
