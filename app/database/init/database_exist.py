@@ -1,15 +1,13 @@
-import os
 import sys
 from pathlib import Path
-current_file = Path(__file__).resolve()
-project_root = current_file.parent.parent.parent
-sys.path.append(str(project_root))
+
+from app.functions.tools.getPath import get_db_path
 
 import sqlite3
 from app.database.connect import connectDB
 from app.database.init.create_tables import create_tables
 
-DB_PATH = os.getenv("DB_PATH", "app/database/database.db")
+DB_PATH = get_db_path()
 
 def database_exist():
 
@@ -48,6 +46,7 @@ def database_exist():
 
     except Exception as e:
         print(f"Error inesperado: {e}")
+        sys.exit(1)
 
     finally:
         if connection:

@@ -1,17 +1,17 @@
-import os
 import sqlite3
-DB_PATH = os.getenv("DB_PATH", "app/database/database.db")
-import sys
-from pathlib import Path
-current_file = Path(__file__).resolve()
-project_root = current_file.parent.parent.parent
-sys.path.append(str(project_root))
+from app.functions.tools.getPath import get_db_path
+
 def connectDB():
     try:
-        conection = sqlite3.connect(DB_PATH) 
-        return conection
+        db_path = get_db_path()
+        
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        print(f"Connecting to database at: {db_path}")
+        connection = sqlite3.connect(str(db_path))
+        connection.execute("PRAGMA foreign_keys = ON")
+        return connection
+        
     except sqlite3.Error as e:
-        print(f"Error connecting the DB: {e}")
-        return None
-
-
+        print(f"Error connecting to database: {e}")
+        raise e
