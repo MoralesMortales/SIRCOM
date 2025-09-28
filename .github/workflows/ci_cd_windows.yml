@@ -32,7 +32,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pyinstaller  # 🔑 Instalar PyInstaller para los tests
+          pip install pyinstaller
       
       - name: Test basic imports
         run: |
@@ -82,25 +82,41 @@ jobs:
       - name: Build executable with .spec file (OneDir)
         id: build_exe
         run: |
+          # Limpiar builds anteriores
+          if (Test-Path "dist") {
+              Remove-Item -Path "dist" -Recurse -Force
+          }
+          
           # Usar el archivo .spec para construir
           pyinstaller build.spec
           
+          # Verificar la estructura creada
           $DirPath = "dist/SistemaInventario"
+          echo "=== ESTRUCTURA CREADA POR PYINSTALLER ==="
+          if (Test-Path $DirPath) {
+              Get-ChildItem -Path $DirPath -Recurse | ForEach-Object { 
+                  $relativePath = $_.FullName.Replace((Get-Location).Path + "\", "")
+                  echo "  $relativePath"
+              }
+          } else {
+              echo "❌ No se creó el directorio $DirPath"
+              echo "=== CONTENIDO DE dist/ ==="
+              Get-ChildItem -Path "dist" -Recurse
+              exit 1
+          }
+          
           $ExePath = "$DirPath/SistemaInventario.exe"
           
-          # Verificar que la estructura se creó correctamente
           if (Test-Path $ExePath) {
               echo "✅ Build exitoso"
               echo "Exe: $ExePath"
-              
-              # Mostrar estructura creada
-              echo "Estructura de archivos:"
-              Get-ChildItem -Path $DirPath -Recurse | ForEach-Object { echo "  $($_.FullName)" }
               
               echo "exe_path=$ExePath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
               echo "dir_path=$DirPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           } else {
               echo "❌ Build falló. No se encontró el ejecutable."
+              echo "Archivos en $DirPath:"
+              Get-ChildItem -Path $DirPath
               exit 1
           }
         shell: pwsh
@@ -109,7 +125,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SistemaInventario-Windows-OneDir
-          path: ${{ steps.build_exe.outputs.dir_path }}
+          path: dist/SistemaInventario/
           retention-days: 7
           
       - name: Create ZIP package for release
@@ -149,18 +165,69 @@ jobs:
         with:
           name: SistemaInventario-Windows-OneDir
           
+      - name: Diagnose downloaded artifact structure
+        run: |
+          echo "=== DIAGNÓSTICO DE LA ESTRUCTURA DESCARGADA ==="
+          echo "Directorio actual de trabajo:"
+          Get-Location
+          
+          echo "=== CONTENIDO DEL DIRECTORIO RAÍZ ==="
+          Get-ChildItem -Path . | ForEach-Object { 
+              if ($_.PSIsContainer) {
+                  echo "📁 $($_.Name)/"
+              } else {
+                  echo "📄 $($_.Name)"
+              }
+          }
+          
+          echo "=== BUSQUEDA RECURSIVA DE .EXE ==="
+          $exeFiles = Get-ChildItem -Path . -Filter "*.exe" -Recurse -File
+          if ($exeFiles.Count -gt 0) {
+              echo "✅ Archivos .exe encontrados:"
+              $exeFiles | ForEach-Object { 
+                  echo "  → $($_.FullName)"
+                  $ExePath = $_.FullName
+              }
+          } else {
+              echo "❌ No se encontraron archivos .exe"
+              echo "=== ESTRUCTURA COMPLETA RECURSIVA ==="
+              Get-ChildItem -Path . -Recurse | ForEach-Object { 
+                  $indent = "  " * ($_.FullName.Split('\').Length - 1)
+                  if ($_.PSIsContainer) {
+                      echo "$indent📁 $($_.Name)/"
+                  } else {
+                      echo "$indent📄 $($_.Name)"
+                  }
+              }
+              exit 1
+          }
+          
+          # Verificar directorio del EXE
+          $exeDir = [System.IO.Path]::GetDirectoryName($ExePath)
+          echo "=== CONTENIDO DEL DIRECTORIO DEL EXE ==="
+          Get-ChildItem -Path $exeDir | ForEach-Object { 
+              if ($_.PSIsContainer) {
+                  echo "📁 $($_.Name)/"
+              } else {
+                  echo "📄 $($_.Name)"
+              }
+          }
+          
+          echo "✅ EXE path definitivo: $ExePath"
+          echo "exe_path=$ExePath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+        shell: pwsh
+      
       - name: Test EXE functionality
         run: |
-          $ExePath = "SistemaInventario/SistemaInventario.exe"
+          # Usar la ruta detectada en el paso anterior
+          $ExePath = "${{ steps.diagnose.outputs.exe_path }}"
           
           if (!(Test-Path $ExePath)) {
               echo "❌ EXE no encontrado en $ExePath"
               exit 1
           }
           
-          echo "✅ Probando EXE en modo OneDir..."
-          echo "Estructura de archivos:"
-          Get-ChildItem -Path "SistemaInventario" -Recurse | ForEach-Object { echo "  $($_.Name)" }
+          echo "✅ Probando EXE: $ExePath"
           
           # Ejecutar prueba
           $output = & $ExePath --ci-test 2>&1 | Out-String
@@ -183,3 +250,5 @@ jobs:
               exit 1
           }
         shell: pwsh
+        env:
+          ExePath: ${{ steps.diagnose.outputs.exe_path }}
