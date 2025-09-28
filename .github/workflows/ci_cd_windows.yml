@@ -9,7 +9,6 @@ on:
     types: [created]
 
 jobs:
-  # 1. TEST: Prueba del código fuente en múltiples versiones de Python
   test:
     name: Compatibility Tests - Python ${{ matrix.python-version }}
     runs-on: windows-latest
@@ -40,7 +39,6 @@ jobs:
           python -c "from PyQt5 import QtWidgets, QtCore; print('PyQt5 OK')"
           python -c "import sqlite3; print('SQLite3 OK')"
 
-  # 2. BUILD: Construye el directorio con el EXE y recursos
   build-windows-exe:
     name: Build Windows Executable (OneDir)
     runs-on: windows-latest
@@ -67,12 +65,10 @@ jobs:
       
       - name: Create database directory and sample file
         run: |
-          # Crear estructura de directorios y DB de ejemplo si no existe
           New-Item -ItemType Directory -Path "app/database" -Force
           New-Item -ItemType Directory -Path "app/images" -Force
           New-Item -ItemType Directory -Path "app/config" -Force
           
-          # Crear un archivo de base de datos vacío si no existe
           if (!(Test-Path "app/database/database.db")) {
               echo "Creando base de datos vacía para el build..."
               $null > app/database/database.db
@@ -82,15 +78,12 @@ jobs:
       - name: Build executable with .spec file (OneDir)
         id: build_exe
         run: |
-          # Limpiar builds anteriores
           if (Test-Path "dist") {
               Remove-Item -Path "dist" -Recurse -Force
           }
           
-          # Usar el archivo .spec para construir
           pyinstaller build.spec
           
-          # Verificar la estructura creada
           $DirPath = "dist/SistemaInventario"
           echo "=== ESTRUCTURA CREADA POR PYINSTALLER ==="
           if (Test-Path $DirPath) {
@@ -99,7 +92,7 @@ jobs:
                   echo "  $relativePath"
               }
           } else {
-              echo "❌ No se creó el directorio $DirPath"
+              echo "No se creó el directorio $DirPath"
               echo "=== CONTENIDO DE dist/ ==="
               Get-ChildItem -Path "dist" -Recurse
               exit 1
@@ -108,14 +101,14 @@ jobs:
           $ExePath = "$DirPath/SistemaInventario.exe"
           
           if (Test-Path $ExePath) {
-              echo "✅ Build exitoso"
+              echo "Build exitoso"
               echo "Exe: $ExePath"
               
               echo "exe_path=$ExePath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
               echo "dir_path=$DirPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           } else {
-              echo "❌ Build falló. No se encontró el ejecutable."
-              echo "Archivos en $DirPath:"
+              echo "Build falló. No se encontró el ejecutable."
+              echo "Archivos en el directorio:"
               Get-ChildItem -Path $DirPath
               exit 1
           }
@@ -134,16 +127,15 @@ jobs:
           $DirPath = "${{ steps.build_exe.outputs.dir_path }}"
           $ZipPath = "dist/SistemaInventario.zip"
           
-          # Crear ZIP del directorio completo
           Compress-Archive -Path $DirPath -DestinationPath $ZipPath -Force
           
           if (Test-Path $ZipPath) {
-              echo "✅ ZIP creado: $ZipPath"
+              echo "ZIP creado: $ZipPath"
               echo "zip_path=$ZipPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           }
         shell: pwsh
           
-      - name: Upload to GitHub Release (Conditional) 🚀
+      - name: Upload to GitHub Release (Conditional)
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
@@ -153,7 +145,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # 3. VERIFY: Prueba el ejecutable final
   test-built-exe:
     name: Test Built Executable Integrity
     runs-on: windows-latest
@@ -166,6 +157,7 @@ jobs:
           name: SistemaInventario-Windows-OneDir
           
       - name: Diagnose downloaded artifact structure
+        id: diagnose
         run: |
           echo "=== DIAGNÓSTICO DE LA ESTRUCTURA DESCARGADA ==="
           echo "Directorio actual de trabajo:"
@@ -183,13 +175,13 @@ jobs:
           echo "=== BUSQUEDA RECURSIVA DE .EXE ==="
           $exeFiles = Get-ChildItem -Path . -Filter "*.exe" -Recurse -File
           if ($exeFiles.Count -gt 0) {
-              echo "✅ Archivos .exe encontrados:"
+              echo "Archivos .exe encontrados:"
               $exeFiles | ForEach-Object { 
                   echo "  → $($_.FullName)"
                   $ExePath = $_.FullName
               }
           } else {
-              echo "❌ No se encontraron archivos .exe"
+              echo "No se encontraron archivos .exe"
               echo "=== ESTRUCTURA COMPLETA RECURSIVA ==="
               Get-ChildItem -Path . -Recurse | ForEach-Object { 
                   $indent = "  " * ($_.FullName.Split('\').Length - 1)
@@ -202,7 +194,6 @@ jobs:
               exit 1
           }
           
-          # Verificar directorio del EXE
           $exeDir = [System.IO.Path]::GetDirectoryName($ExePath)
           echo "=== CONTENIDO DEL DIRECTORIO DEL EXE ==="
           Get-ChildItem -Path $exeDir | ForEach-Object { 
@@ -213,23 +204,21 @@ jobs:
               }
           }
           
-          echo "✅ EXE path definitivo: $ExePath"
+          echo "EXE path definitivo: $ExePath"
           echo "exe_path=$ExePath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
         shell: pwsh
       
       - name: Test EXE functionality
         run: |
-          # Usar la ruta detectada en el paso anterior
           $ExePath = "${{ steps.diagnose.outputs.exe_path }}"
           
           if (!(Test-Path $ExePath)) {
-              echo "❌ EXE no encontrado en $ExePath"
+              echo "EXE no encontrado en $ExePath"
               exit 1
           }
           
-          echo "✅ Probando EXE: $ExePath"
+          echo "Probando EXE: $ExePath"
           
-          # Ejecutar prueba
           $output = & $ExePath --ci-test 2>&1 | Out-String
           $exitCode = $LASTEXITCODE
           
@@ -238,17 +227,14 @@ jobs:
           echo "======================"
           echo "Código de salida: $exitCode"
           
-          # Verificar resultado
           if ($exitCode -eq 0) {
               if ($output -match "Error connecting the DB|Error inesperado|Traceback|Exception") {
-                  echo "❌ EXE mostró errores a pesar de código de salida 0"
+                  echo "EXE mostró errores a pesar de código de salida 0"
                   exit 1
               }
-              echo "✅ EXE - Prueba OK (sin errores)"
+              echo "EXE - Prueba OK (sin errores)"
           } else {
-              echo "❌ EXE - Falló. Código: $exitCode"
+              echo "EXE - Falló. Código: $exitCode"
               exit 1
           }
         shell: pwsh
-        env:
-          ExePath: ${{ steps.diagnose.outputs.exe_path }}
