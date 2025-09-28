@@ -9,7 +9,7 @@ on:
     types: [created]
 
 jobs:
-  # 1. TEST: Prueba del código fuente y dependencias
+  # 1. TEST: Prueba del código fuente en múltiples versiones de Python
   test:
     name: Compatibility Tests - Python ${{ matrix.python-version }}
     runs-on: windows-latest
@@ -32,21 +32,20 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pyinstaller  # 🔑 Instalar PyInstaller para los tests
       
       - name: Test basic imports
         run: |
           python -c "import sys; print('Python OK')"
           python -c "from PyQt5 import QtWidgets, QtCore; print('PyQt5 OK')"
+          python -c "import sqlite3; print('SQLite3 OK')"
 
-  # 2. BUILD: Construye el EXE final
+  # 2. BUILD: Construye el directorio con el EXE y recursos
   build-windows-exe:
-    name: Build Windows Executable - Python ${{ matrix.python-version }}
+    name: Build Windows Executable (OneDir)
     runs-on: windows-latest
-    needs: test 
-    strategy:
-      matrix:
-        python-version: ['3.11']
-    
+    needs: test
+
     permissions:
       contents: write 
     
@@ -54,10 +53,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
           cache: 'pip'
       
       - name: Install PyInstaller and dependencies
@@ -66,20 +65,42 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
       
-      - name: Build executable
+      - name: Create database directory and sample file
+        run: |
+          # Crear estructura de directorios y DB de ejemplo si no existe
+          New-Item -ItemType Directory -Path "app/database" -Force
+          New-Item -ItemType Directory -Path "app/images" -Force
+          New-Item -ItemType Directory -Path "app/config" -Force
+          
+          # Crear un archivo de base de datos vacío si no existe
+          if (!(Test-Path "app/database/database.db")) {
+              echo "Creando base de datos vacía para el build..."
+              $null > app/database/database.db
+          }
+        shell: pwsh
+      
+      - name: Build executable with .spec file (OneDir)
         id: build_exe
         run: |
-          $ExeName = "SistemaInventario-Py${{ matrix.python-version }}.exe"
-          pyinstaller --onefile --windowed --clean --name "SistemaInventario-Py${{ matrix.python-version }}" `
-                      --log-level=INFO `
-                      main.py
+          # Usar el archivo .spec para construir
+          pyinstaller build.spec
           
-          $ExePath = "dist/SistemaInventario-Py${{ matrix.python-version }}.exe"
+          $DirPath = "dist/SistemaInventario"
+          $ExePath = "$DirPath/SistemaInventario.exe"
+          
+          # Verificar que la estructura se creó correctamente
           if (Test-Path $ExePath) {
-              echo "✅ Build exitoso: $ExePath"
+              echo "✅ Build exitoso"
+              echo "Exe: $ExePath"
+              
+              # Mostrar estructura creada
+              echo "Estructura de archivos:"
+              Get-ChildItem -Path $DirPath -Recurse | ForEach-Object { echo "  $($_.FullName)" }
+              
               echo "exe_path=$ExePath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+              echo "dir_path=$DirPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           } else {
-              echo "❌ Build falló. No se encontró $ExeName."
+              echo "❌ Build falló. No se encontró el ejecutable."
               exit 1
           }
         shell: pwsh
@@ -87,49 +108,78 @@ jobs:
       - name: Upload executable as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SistemaInventario-Py${{ matrix.python-version }}
-          path: ${{ steps.build_exe.outputs.exe_path }}
+          name: SistemaInventario-Windows-OneDir
+          path: ${{ steps.build_exe.outputs.dir_path }}
           retention-days: 7
           
-      - name: Upload to GitHub Release (Conditional)
-        if: github.event_name == 'release' && steps.build_exe.outputs.exe_path != ''
+      - name: Create ZIP package for release
+        id: create_zip
+        run: |
+          $DirPath = "${{ steps.build_exe.outputs.dir_path }}"
+          $ZipPath = "dist/SistemaInventario.zip"
+          
+          # Crear ZIP del directorio completo
+          Compress-Archive -Path $DirPath -DestinationPath $ZipPath -Force
+          
+          if (Test-Path $ZipPath) {
+              echo "✅ ZIP creado: $ZipPath"
+              echo "zip_path=$ZipPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          }
+        shell: pwsh
+          
+      - name: Upload to GitHub Release (Conditional) 🚀
+        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ steps.build_exe.outputs.exe_path }}
+          files: |
+            ${{ steps.build_exe.outputs.dir_path }}/SistemaInventario.exe
+            ${{ steps.create_zip.outputs.zip_path }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # 3. VERIFY: Prueba el ejecutable final
   test-built-exe:
-    name: Test Built Executable - Python ${{ matrix.python-version }}
+    name: Test Built Executable Integrity
     runs-on: windows-latest
-    needs: build-windows-exe 
-    strategy:
-      matrix:
-        python-version: ['3.11']
-    
+    needs: build-windows-exe
+
     steps:
       - name: Download EXE artifact
         uses: actions/download-artifact@v4
         with:
-          name: SistemaInventario-Py${{ matrix.python-version }}
+          name: SistemaInventario-Windows-OneDir
           
       - name: Test EXE functionality
         run: |
-          $ExePath = "SistemaInventario-Py${{ matrix.python-version }}.exe"
+          $ExePath = "SistemaInventario/SistemaInventario.exe"
           
           if (!(Test-Path $ExePath)) {
               echo "❌ EXE no encontrado en $ExePath"
               exit 1
           }
           
-          echo "✅ Probando EXE built with Python ${{ matrix.python-version }}"
-          $process = Start-Process -FilePath $ExePath -ArgumentList "--ci-test" -Wait -PassThru -NoNewWindow
+          echo "✅ Probando EXE en modo OneDir..."
+          echo "Estructura de archivos:"
+          Get-ChildItem -Path "SistemaInventario" -Recurse | ForEach-Object { echo "  $($_.Name)" }
           
-          if ($process.ExitCode -eq 0) {
-              echo "✅ EXE Python ${{ matrix.python-version }} - Prueba OK"
+          # Ejecutar prueba
+          $output = & $ExePath --ci-test 2>&1 | Out-String
+          $exitCode = $LASTEXITCODE
+          
+          echo "=== SALIDA DEL EXE ==="
+          echo $output
+          echo "======================"
+          echo "Código de salida: $exitCode"
+          
+          # Verificar resultado
+          if ($exitCode -eq 0) {
+              if ($output -match "Error connecting the DB|Error inesperado|Traceback|Exception") {
+                  echo "❌ EXE mostró errores a pesar de código de salida 0"
+                  exit 1
+              }
+              echo "✅ EXE - Prueba OK (sin errores)"
           } else {
-              echo "❌ EXE Python ${{ matrix.python-version }} - Falló. Código: $process.ExitCode"
+              echo "❌ EXE - Falló. Código: $exitCode"
               exit 1
           }
         shell: pwsh
