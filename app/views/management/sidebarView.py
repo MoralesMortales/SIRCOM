@@ -1,6 +1,8 @@
 from PyQt5 import QtGui
 from PyQt5 import QtCore
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QWidget, QApplication
+
 from app.windows.py.sidebarWds import Ui_Form
 from PyQt5.QtCore import QEvent, Qt, QTimer
 
@@ -40,39 +42,49 @@ class sidebarView(QWidget, Ui_Form):
         super().hideEvent(event)
 
     def make_labels_clickable(self):
-        """Hacer que los labels sean clickeables y conectar sus señales"""
-        # Lista de labels que queremos hacer clickeables
         clickable_labels = [
             self.labelInventario,
             self.labelNuevo,
             self.labelHistorial,
             self.labelEstadistica,
-            self.label_13  # También el label "Salir"
+            self.label_13
         ]
         
-        # Configurar cada label como clickeable
         for label in clickable_labels:
             label.setProperty("clickable", "true")
             label.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             label.mousePressEvent = self.create_click_handler(label.objectName())
 
     def create_click_handler(self, label_name):
-        """Crear un manejador de eventos para cada label"""
+
         def click_handler(event):
-            print("hola")  # Esto se ejecutará en cada clic
-            # También puedes imprimir el nombre del label que fue clickeado
             print(f"Label clickeado: {label_name}")
             
-            # Aquí puedes agregar lógica específica para cada label si lo deseas
             if label_name == "labelInventario":
-                print("Acción: Inventario")
+                from app.views.management.inventoryView import inventoryMainView
+                self.inventory = inventoryMainView()
+                self.inventory.showMaximized()
+                self.parent().close()
+                self.close()
+
             elif label_name == "labelNuevo":
-                print("Acción: Nuevo producto")
+                from app.views.management.newProductView import newProductView
+                self.newProduct = newProductView()
+                self.newProduct.showMaximized()
+                self.parent().close()
+                self.close()
+
             elif label_name == "labelHistorial":
-                print("Acción: Historial")
+                from app.views.management.historyView import historyView
+                self.history = historyView()
+                self.history.showMaximized()
+                self.parent().close()
+                self.close()
+
             elif label_name == "labelEstadistica":
                 print("Acción: Estadísticas")
+            
             elif label_name == "label_13":
-                print("Acción: Salir")
+                QtWidgets.QApplication.quit()
                 
         return click_handler

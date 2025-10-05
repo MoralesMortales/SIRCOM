@@ -1,88 +1,71 @@
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox
 from PyQt5.QtCore import Qt
-import sys
-from pathlib import Path
-current_file = Path(__file__).resolve()
-project_root = current_file.parent.parent.parent
-sys.path.append(str(project_root))
-from app.database.management.loadInventory_Main import buscar_productos, obtener_detalles_producto, obtener_todos_productos
+
+from app.database.management.loadInventory_Main import getDetatilsProduct, getAllProducts, searchProducts
 
 class TableManager:
     def __init__(self, table_widget):
         self.table = table_widget
 
-    def configurar_tabla(self):
-        """Configurar propiedades de la tabla"""
-        # Configuración básica del header
+    def configTable(self):
         header = self.table.horizontalHeader()
         header.setStretchLastSection(False)
         
-        # Establece todos los modos como Interactive
         for i in range(4):
             header.setSectionResizeMode(i, QHeaderView.Interactive)
-        
-        # Conectar el evento de cambio de geometría
         header.geometriesChanged.connect(self.resize_columns)
         
-        # Aplicar los tamaños inicialmente
         self.resize_columns()
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
 
     def resize_columns(self):
-        """Redimensionar columnas según porcentajes"""
         table_width = self.table.viewport().width()
         percentages = [10, 50, 25, 15]
         for i, percentage in enumerate(percentages):
             self.table.horizontalHeader().resizeSection(i, int(table_width * percentage / 100))
 
     def cargar_datos_inventario(self):
-        productos = obtener_todos_productos()
-        self.actualizar_tabla(productos)
+        productos = getAllProducts()
+        self.updateTable(productos)
             
-    def buscar_producto(self, texto_busqueda):
-        """Filtrar productos según el texto de búsqueda"""
+    def search_product(self, texto_busqueda):
         if texto_busqueda.strip():
-            productos = buscar_productos(texto_busqueda)
+            productos = searchProducts(texto_busqueda)
         else:
-            productos = obtener_todos_productos()
-        self.actualizar_tabla(productos)
+            productos = getAllProducts()
+        self.updateTable(productos)
     
-    def actualizar_tabla(self, productos):
+    def updateTable(self, productos):
         self.table.setRowCount(0)
         
         for fila_idx, producto in enumerate(productos):
             self.table.insertRow(fila_idx)
             
-            # ID
             item_id = QTableWidgetItem(str(producto[0]))
             item_id.setTextAlignment(Qt.AlignCenter)
             self.table.setItem(fila_idx, 0, item_id)
             
-            # Nombre
             item_nombre = QTableWidgetItem(producto[1])
             self.table.setItem(fila_idx, 1, item_nombre)
             
-            # Stock
             item_stock = QTableWidgetItem(str(producto[2]))
             item_stock.setTextAlignment(Qt.AlignCenter)
             self.table.setItem(fila_idx, 2, item_stock)
             
-            # Botón "Ver más"
             btn_ver_mas = QTableWidgetItem("🔍 Ver")
             btn_ver_mas.setTextAlignment(Qt.AlignCenter)
             btn_ver_mas.setFlags(Qt.ItemIsEnabled)
             self.table.setItem(fila_idx, 3, btn_ver_mas)
     
     def on_cell_clicked(self, row, column, parent_window):
-        if column == 3:  # Columna "Ver más"
+        if column == 3: 
             producto_id = self.table.item(row, 0).text()
             producto_nombre = self.table.item(row, 1).text()
             self.mostrar_detalles_producto(producto_id, producto_nombre, parent_window)
     
     def mostrar_detalles_producto(self, producto_id, producto_nombre, parent_window):
-        """Mostrar detalles del producto seleccionado"""
-        producto = obtener_detalles_producto(producto_id)
+        producto = getDetatilsProduct(producto_id)
         
         if producto:
             mensaje = f"""

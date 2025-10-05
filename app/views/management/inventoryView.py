@@ -10,29 +10,25 @@ class inventoryMainView(QWidget, Ui_Form):
         self.setupUi(self)
         self.setWindowTitle("Inventario")
         self.table_manager = TableManager(self.tableInventario)
-        self.table_manager.configurar_tabla()
+        self.table_manager.configTable()
         self.table_manager.cargar_datos_inventario()
-        self.inputBuscar.textChanged.connect(self.buscar_producto)
-        self.btnLateral.clicked.connect(self.mostrar_menu_lateral)
+        self.inputBuscar.textChanged.connect(self.search_product)
+        self.btnLateral.clicked.connect(self.showSidebar)
         self.tableInventario.cellClicked.connect(self.on_cell_clicked)
 
-    def buscar_producto(self, texto_busqueda):
-        self.table_manager.buscar_producto(texto_busqueda)
+    def search_product(self, text_search):
+        self.table_manager.search_product(text_search)
     
     def on_cell_clicked(self, row, column):
         self.table_manager.on_cell_clicked(row, column, self)
     
-    def mostrar_menu_lateral(self):
-        print("Botón lateral clickeado")
+    def showSidebar(self):
         
-        # Si el sidebar ya existe y está visible, ocultarlo
         if hasattr(self, 'sidebar') and self.sidebar and self.sidebar.isVisible():
             self.sidebar.hide()
             return
         
-        # Crear nuevo sidebar si no existe
         if not hasattr(self, 'sidebar') or self.sidebar is None:
             self.sidebar = sidebarView(self)
         
-        # Mostrar el sidebar
         self.sidebar.show_sidebar()
