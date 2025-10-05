@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget
 
 from app.functions.window_funtions.management.inventory_Main import TableManager
+from app.views.management.sidebarView import sidebarView
 from app.windows.py.inventoryWds import Ui_Form
 
 class inventoryMainView(QWidget, Ui_Form):
@@ -23,4 +24,15 @@ class inventoryMainView(QWidget, Ui_Form):
     
     def mostrar_menu_lateral(self):
         print("Botón lateral clickeado")
-
+        
+        # Si el sidebar ya existe y está visible, ocultarlo
+        if hasattr(self, 'sidebar') and self.sidebar and self.sidebar.isVisible():
+            self.sidebar.hide()
+            return
+        
+        # Crear nuevo sidebar si no existe
+        if not hasattr(self, 'sidebar') or self.sidebar is None:
+            self.sidebar = sidebarView(self)
+        
+        # Mostrar el sidebar
+        self.sidebar.show_sidebar()

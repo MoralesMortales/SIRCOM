@@ -10,21 +10,36 @@ from app.database.management.loadInventory_Main import buscar_productos, obtener
 class TableManager:
     def __init__(self, table_widget):
         self.table = table_widget
-    
+
     def configurar_tabla(self):
         """Configurar propiedades de la tabla"""
-        self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
-        self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-        self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
-        self.table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        # Configuración básica del header
+        header = self.table.horizontalHeader()
+        header.setStretchLastSection(False)
+        
+        # Establece todos los modos como Interactive
+        for i in range(4):
+            header.setSectionResizeMode(i, QHeaderView.Interactive)
+        
+        # Conectar el evento de cambio de geometría
+        header.geometriesChanged.connect(self.resize_columns)
+        
+        # Aplicar los tamaños inicialmente
+        self.resize_columns()
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
-    
+
+    def resize_columns(self):
+        """Redimensionar columnas según porcentajes"""
+        table_width = self.table.viewport().width()
+        percentages = [10, 50, 25, 15]
+        for i, percentage in enumerate(percentages):
+            self.table.horizontalHeader().resizeSection(i, int(table_width * percentage / 100))
+
     def cargar_datos_inventario(self):
-        """Cargar datos del inventario"""
         productos = obtener_todos_productos()
         self.actualizar_tabla(productos)
-    
+            
     def buscar_producto(self, texto_busqueda):
         """Filtrar productos según el texto de búsqueda"""
         if texto_busqueda.strip():
