@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QApplication
-from app.windows.py.sidebar import Ui_Form
+from app.windows.py.sidebarWds import Ui_Form
 from PyQt5.QtCore import QEvent, Qt, QTimer
 
 class sidebarView(QWidget, Ui_Form):

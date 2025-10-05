@@ -1,4 +1,3 @@
 # Inventory_exe
 
-
-## aRight now doing CICD Tests to Build
+### To Login, Cedula 31034825, Clave 12345678
