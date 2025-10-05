@@ -68,7 +68,7 @@ class sidebarView(QWidget, Ui_Form):
                 self.close()
 
             elif label_name == "labelNuevo":
-                from app.views.management.newProductView import newProductView
+                from app.views.management.products.newProductView import newProductView
                 self.newProduct = newProductView()
                 self.newProduct.showMaximized()
                 self.parent().close()

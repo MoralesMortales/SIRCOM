@@ -9,7 +9,7 @@ class inventoryMainView(QWidget, Ui_Form):
         super().__init__()
         self.setupUi(self)
         self.setWindowTitle("Inventario")
-        self.table_manager = TableManager(self.tableInventario)
+        self.table_manager = TableManager(self.tableInventario, self)
         self.table_manager.configTable()
         self.table_manager.cargar_datos_inventario()
         self.inputBuscar.textChanged.connect(self.search_product)

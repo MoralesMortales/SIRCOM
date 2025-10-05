@@ -2,9 +2,11 @@ from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView, QMessag
 from PyQt5.QtCore import Qt
 
 from app.database.management.loadInventory_Main import getDetatilsProduct, getAllProducts, searchProducts
+from app.views.management.products.informationView import informationView
 
 class TableManager:
-    def __init__(self, table_widget):
+    def __init__(self, table_widget, parent=None):
+        self.parent_window = parent
         self.table = table_widget
 
     def configTable(self):
@@ -68,14 +70,8 @@ class TableManager:
         producto = getDetatilsProduct(producto_id)
         
         if producto:
-            mensaje = f"""
-            <b>Detalles del Producto:</b><br><br>
-            <b>ID:</b> {producto[0]}<br>
-            <b>Nombre:</b> {producto[1]}<br>
-            <b>Stock:</b> {producto[2]}<br>
-            <b>Descripción:</b><br>{producto[3] if producto[3] else 'Sin descripción'}
-            """
-            
-            QMessageBox.information(parent_window, "Detalles del Producto", mensaje)
+            self.informationView = informationView()
+            self.informationView.showMaximized()
+            self.parent_window.close()
         else:
             QMessageBox.warning(parent_window, "Error", "Producto no encontrado")
