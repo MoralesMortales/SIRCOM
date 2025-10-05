@@ -7,7 +7,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[
-        ('app/database', 'app/database'),
+      ('app/assets', 'app/assets'),
     ],
     hiddenimports=[],
     hookspath=[],

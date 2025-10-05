@@ -63,16 +63,10 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
       
-      - name: Create database directory and sample file
+      - name: Create assets directory
         run: |
-          New-Item -ItemType Directory -Path "app/database" -Force
-          New-Item -ItemType Directory -Path "app/images" -Force
-          New-Item -ItemType Directory -Path "app/config" -Force
+          New-Item -ItemType Directory -Path "app/assets" -Force
           
-          if (!(Test-Path "app/database/database.db")) {
-              echo "Creando base de datos vacía para el build..."
-              $null > app/database/database.db
-          }
         shell: pwsh
       
       - name: Build executable with .spec file (OneDir)
