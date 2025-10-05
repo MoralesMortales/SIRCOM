@@ -81,8 +81,7 @@ jobs:
           if (Test-Path "dist") {
               Remove-Item -Path "dist" -Recurse -Force
           }
-          pyinstaller --noconfirm --console build.spec
-          # pyinstaller build.spec
+          pyinstaller build.spec
           
           $DirPath = "dist/SistemaInventario"
           echo "=== ESTRUCTURA CREADA POR PYINSTALLER ==="
