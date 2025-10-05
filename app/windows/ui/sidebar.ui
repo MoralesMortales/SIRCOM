@@ -89,7 +89,7 @@ QLabel {
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>User</string>
+        <string>Sistema de Inventario</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -97,7 +97,16 @@ QLabel {
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <property name="leftMargin">
+        <number>15</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QLabel" name="iconInventario">
          <property name="maximumSize">
@@ -110,7 +119,7 @@ QLabel {
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>../cube-alt-2-svgrepo-com.png</pixmap>
+          <pixmap>../../assets/icons/Box.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -136,6 +145,12 @@ QLabel {
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <property name="leftMargin">
+        <number>15</number>
+       </property>
        <item>
         <widget class="QLabel" name="iconNuevo">
          <property name="maximumSize">
@@ -174,6 +189,12 @@ QLabel {
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <property name="leftMargin">
+        <number>15</number>
+       </property>
        <item>
         <widget class="QLabel" name="iconHistorial">
          <property name="maximumSize">
@@ -212,6 +233,12 @@ QLabel {
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <property name="leftMargin">
+        <number>15</number>
+       </property>
        <item>
         <widget class="QLabel" name="iconEstadistica">
          <property name="maximumSize">
