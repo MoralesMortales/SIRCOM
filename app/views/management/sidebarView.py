@@ -82,7 +82,11 @@ class sidebarView(QWidget, Ui_Form):
                 self.close()
 
             elif label_name == "labelEstadistica":
-                print("Acción: Estadísticas")
+                from app.views.stadistic.stadisticsMaterialView import stadisticMaterialView
+                self.stadistics = stadisticMaterialView()
+                self.stadistics.showMaximized()
+                self.parent().close()
+                self.close()
             
             elif label_name == "label_13":
                 QtWidgets.QApplication.quit()

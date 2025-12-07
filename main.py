@@ -8,7 +8,7 @@ if "--ci-test" in sys.argv:
     print("CI Test flag detected. Exiting successfully without launching GUI.")
     sys.exit(0)
 
-initialize_db() 
+initialize_db()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

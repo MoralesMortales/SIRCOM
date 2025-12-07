@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(879, 640)
+        Form.resize(879, 659)
         Form.setStyleSheet("QWidget {\n"
 "    background-color: #f6f5b2;\n"
 "    font-family: Arial, Helvetica, sans-serif;\n"
@@ -33,13 +33,14 @@ class Ui_Form(object):
 "    padding: 4px;\n"
 "}\n"
 "\n"
-"QLineEdit {\n"
+"QTextEdit{\n"
 "    background-color: #eeeeee;\n"
 "    border: 1px solid #aaa;\n"
 "    border-radius: 4px;\n"
 "    padding: 6px;\n"
 "    font-size: 14px;\n"
 "}\n"
+"\n"
 "QLineEdit:focus {\n"
 "    border: 1px solid #5a8dee;\n"
 "    background-color: #ffffff;\n"
@@ -127,7 +128,12 @@ class Ui_Form(object):
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setSpacing(16)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_6.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.labelNombre = QtWidgets.QLabel(Form)
+        self.labelNombre.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -135,7 +141,20 @@ class Ui_Form(object):
         font.setWeight(75)
         self.labelNombre.setFont(font)
         self.labelNombre.setObjectName("labelNombre")
-        self.verticalLayout_4.addWidget(self.labelNombre)
+        self.horizontalLayout_6.addWidget(self.labelNombre)
+        self.btnEditarNombre = QtWidgets.QLabel(Form)
+        self.btnEditarNombre.setMaximumSize(QtCore.QSize(30, 30))
+        self.btnEditarNombre.setText("")
+        self.btnEditarNombre.setPixmap(QtGui.QPixmap("app/windows/ui/../../assets/icons/Edit.png"))
+        self.btnEditarNombre.setScaledContents(True)
+        self.btnEditarNombre.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.btnEditarNombre.setWordWrap(False)
+        self.btnEditarNombre.setOpenExternalLinks(False)
+        self.btnEditarNombre.setObjectName("btnEditarNombre")
+        self.horizontalLayout_6.addWidget(self.btnEditarNombre)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_6)
         self.textEditNombre = QtWidgets.QTextEdit(Form)
         self.textEditNombre.setObjectName("textEditNombre")
         self.verticalLayout_4.addWidget(self.textEditNombre)
@@ -158,6 +177,8 @@ class Ui_Form(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout_8)
         self.verticalLayout_9 = QtWidgets.QVBoxLayout()
         self.verticalLayout_9.setObjectName("verticalLayout_9")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.labelStock = QtWidgets.QLabel(Form)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -166,12 +187,24 @@ class Ui_Form(object):
         font.setWeight(75)
         self.labelStock.setFont(font)
         self.labelStock.setObjectName("labelStock")
-        self.verticalLayout_9.addWidget(self.labelStock)
+        self.horizontalLayout_4.addWidget(self.labelStock)
+        self.btnEditarStock = QtWidgets.QLabel(Form)
+        self.btnEditarStock.setMaximumSize(QtCore.QSize(30, 30))
+        self.btnEditarStock.setText("")
+        self.btnEditarStock.setPixmap(QtGui.QPixmap("app/windows/ui/../../assets/icons/Edit.png"))
+        self.btnEditarStock.setScaledContents(True)
+        self.btnEditarStock.setObjectName("btnEditarStock")
+        self.horizontalLayout_4.addWidget(self.btnEditarStock)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem1)
+        self.verticalLayout_9.addLayout(self.horizontalLayout_4)
         self.textEditCliente = QtWidgets.QTextEdit(Form)
         self.textEditCliente.setObjectName("textEditCliente")
         self.verticalLayout_9.addWidget(self.textEditCliente)
         self.horizontalLayout_3.addLayout(self.verticalLayout_9)
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.labelDesc = QtWidgets.QLabel(Form)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -180,12 +213,22 @@ class Ui_Form(object):
         font.setWeight(75)
         self.labelDesc.setFont(font)
         self.labelDesc.setObjectName("labelDesc")
-        self.verticalLayout_4.addWidget(self.labelDesc)
+        self.horizontalLayout_7.addWidget(self.labelDesc)
+        self.btnEditarDesc = QtWidgets.QLabel(Form)
+        self.btnEditarDesc.setMaximumSize(QtCore.QSize(30, 30))
+        self.btnEditarDesc.setText("")
+        self.btnEditarDesc.setPixmap(QtGui.QPixmap("app/windows/ui/../../assets/icons/Edit.png"))
+        self.btnEditarDesc.setScaledContents(True)
+        self.btnEditarDesc.setObjectName("btnEditarDesc")
+        self.horizontalLayout_7.addWidget(self.btnEditarDesc)
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_7.addItem(spacerItem2)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_7)
         self.textEditDesc = QtWidgets.QTextEdit(Form)
         self.textEditDesc.setObjectName("textEditDesc")
         self.verticalLayout_4.addWidget(self.textEditDesc)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_4.addItem(spacerItem)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_4.addItem(spacerItem3)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setSpacing(24)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
