@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>994</width>
-    <height>771</height>
+    <height>710</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -124,7 +124,7 @@ QPushButton:pressed {
          </widget>
         </item>
         <item>
-         <spacer name="verticalSpacer_6">
+         <spacer name="verticalSpacer_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -153,14 +153,14 @@ QPushButton:pressed {
          </widget>
         </item>
         <item>
-         <spacer name="verticalSpacer_5">
+         <spacer name="verticalSpacer_4">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>60</height>
+            <height>40</height>
            </size>
           </property>
          </spacer>
@@ -170,9 +170,9 @@ QPushButton:pressed {
      </item>
      <item>
       <widget class="QWidget" name="panelDerecho" native="true">
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0">
         <property name="spacing">
-         <number>50</number>
+         <number>16</number>
         </property>
         <property name="leftMargin">
          <number>50</number>
@@ -187,7 +187,7 @@ QPushButton:pressed {
          <number>40</number>
         </property>
         <item>
-         <spacer name="verticalSpacer_3">
+         <spacer name="verticalSpacer_5">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -235,49 +235,19 @@ QPushButton:pressed {
          </spacer>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <property name="spacing">
-           <number>16</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="labelUser">
-            <property name="text">
-             <string>Usuario</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="lineEditUser">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
            <number>16</number>
           </property>
           <item>
-           <widget class="QLabel" name="labelPass">
+           <widget class="QLabel" name="labelCedula">
             <property name="text">
-             <string>Contraseña</string>
+             <string>Ingrese su cédula</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEditPass">
+           <widget class="QLineEdit" name="lineEditCedula">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -290,33 +260,14 @@ QPushButton:pressed {
               <height>0</height>
              </size>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="labelLink">
-            <property name="font">
-             <font>
-              <family>Arial</family>
-              <pointsize>-1</pointsize>
-              <weight>50</weight>
-              <italic>false</italic>
-              <bold>false</bold>
-              <underline>false</underline>
-              <strikeout>false</strikeout>
-              <kerning>true</kerning>
-             </font>
+            <property name="baseSize">
+             <size>
+              <width>0</width>
+              <height>-3968</height>
+             </size>
             </property>
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="mouseTracking">
-             <bool>false</bool>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::TabFocus</enum>
-            </property>
-            <property name="text">
-             <string>Olvidé mi contraseña</string>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -335,24 +286,63 @@ QPushButton:pressed {
           </property>
          </spacer>
         </item>
-        <item alignment="Qt::AlignHCenter">
-         <widget class="QPushButton" name="buttonLogin">
-          <property name="minimumSize">
-           <size>
-            <width>250</width>
-            <height>0</height>
-           </size>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="spacing">
+           <number>16</number>
           </property>
-          <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
-          </property>
-          <property name="text">
-           <string>Iniciar sesión</string>
-          </property>
-         </widget>
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QPushButton" name="buttonCorreo">
+            <property name="minimumSize">
+             <size>
+              <width>250</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Enviar correo</string>
+            </property>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QPushButton" name="buttonCrear">
+            <property name="minimumSize">
+             <size>
+              <width>250</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Crear cuenta</string>
+            </property>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QPushButton" name="buttonVolver">
+            <property name="minimumSize">
+             <size>
+              <width>250</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Volver</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <spacer name="verticalSpacer_4">
+         <spacer name="verticalSpacer_6">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>

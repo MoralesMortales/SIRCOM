@@ -16,43 +16,51 @@ def create_tables():
         connection_cursor = connection.cursor()
 
         sql_statements = [
-            """CREATE TABLE IF NOT EXISTS productos (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+      
+          """CREATE TABLE IF NOT EXISTS proveedor (
+          rif INTEGER PRIMARY KEY,
+          nombreEmpresa TEXT,
+          direccionEmpresa TEXT,
+          telefono INTEGER,
+          correo TEXT
+        );""",
+
+          """CREATE TABLE IF NOT EXISTS usuario (
+          cedula INTEGER PRIMARY KEY,
+          primerNombre TEXT,
+          primerApellido TEXT,
+          correo TEXT UNIQUE,
+          contrasena TEXT
+        );""",
+
+          """CREATE TABLE IF NOT EXISTS producto (
+          codigo INTEGER PRIMARY KEY AUTOINCREMENT,
           nombre TEXT,
-          descripcion TEXT,
-          stock INTEGER
+          precioUnitario FLOAT,
+          stock INTEGER,
+          rifProveedor INTEGER,
+          FOREIGN KEY (rifProveedor) REFERENCES proveedor (rif)
         );""",
-            """CREATE TABLE IF NOT EXISTS usuarios (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          cedula TEXT,
-          clave TEXT
+
+            """CREATE TABLE IF NOT EXISTS compra (
+          idCompra INTEGER PRIMARY KEY AUTOINCREMENT,
+          fechaCompra DATE,
+          totalCompra FLOAT,
+          cedulaUsuario INTEGER,
+          FOREIGN KEY (cedulaUsuario) REFERENCES usuario (cedula)
         );""",
-            """CREATE TABLE IF NOT EXISTS proveedores (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          nombre TEXT
-        );""",
-            """CREATE TABLE IF NOT EXISTS clientes (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          nombre TEXT
-        );""",
-            """CREATE TABLE IF NOT EXISTS entradas (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          producto_id INTEGER,
-          cantidad INTEGER,
-          proveedor TEXT,
-          fecha DATE,
-          FOREIGN KEY (producto_id) REFERENCES productos (id)
-        );""",
-            """CREATE TABLE IF NOT EXISTS salidas (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          producto_id INTEGER,
-          cantidad INTEGER,
-          cliente TEXT,
-          fecha DATE,
-          FOREIGN KEY (producto_id) REFERENCES productos (id)
-        );""",
-            """INSERT INTO usuarios (cedula, clave) VALUES ("31034825", "12345678")"""
-        ]
+
+          """CREATE TABLE IF NOT EXISTS detalleCompra (
+          idDetalleProducto INTEGER PRIMARY KEY AUTOINCREMENT,
+          idCompra INTEGER,
+          codigoProducto INTEGER,
+          cantidad FLOAT,
+          precioUnitario FLOAT,
+          subTotal FLOAT,
+          FOREIGN KEY (idCompra) REFERENCES compra (idCompra),
+          FOREIGN KEY (codigoProducto) REFERENCES producto (codigo)
+        );"""
+          ]
 
         for statement in sql_statements:
             connection_cursor.execute(statement)

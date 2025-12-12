@@ -17,16 +17,14 @@ def database_exist():
         db_file = Path(DB_PATH)
         
         if not db_file.exists():
-            print(f"La base de datos '{DB_PATH}' no existe. Creándola...")
+            print(f"DB '{DB_PATH}' doesnt exist, creating it...")
             connection = connectDB()
             connection.close()
-            
-            print(f"La base de datos ha sido creada exitosamente.")
-            
+            print(f"The DB was created sucessfully.")
             create_tables()
             
         else:
-            print(f"La base de datos ya existe.")
+            print(f"DB already exists")
             
             connection = connectDB()
             cursor = connection.cursor()
@@ -34,10 +32,10 @@ def database_exist():
             cursor.execute("SELECT * FROM sqlite_master ")
             if not cursor.fetchone():
                 print( cursor.fetchone())
-                print("Las tablas no existen. Creándolas...")
+                print(f"DB doesnt exist, creating it...")
                 create_tables()
             else:
-                print("Las tablas ya existen.")
+                print(f"DB already exists")
                 
             connection.close()
 

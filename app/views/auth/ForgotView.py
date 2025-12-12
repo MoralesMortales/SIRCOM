@@ -1,20 +1,30 @@
 from PyQt5 import QtWidgets
 from app.database.auth.auth import authData
-from app.windows.py.loginWds import Ui_Form
-from app.views.auth.ForgotView import ForgotView
+from app.windows.py.forgotWds import Ui_Form
+from app.views.auth.RegisterView import RegisterView
 
-class LoginView(QtWidgets.QWidget, Ui_Form):
+class ForgotView(QtWidgets.QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.setWindowTitle("Autenticación")
-        self.forgotView = ForgotView()
-        self.labelLink.mousePressEvent = self.goToForgot
+        self.setWindowTitle("Resetear Clave")
+        self.buttonCrear.clicked.connect(self.goToRegister)
+        self.buttonVolver.clicked.connect(self.comeBack)
+        self.registerView = RegisterView()
 
-    def goToForgot(self, event):
-        self.forgotView.showMaximized()
+# Links
+
+    def goToRegister(self):
+        self.registerView.showMaximized()
         self.close()
-        
+
+    def comeBack(self):
+        from app.views.auth.LoginView import LoginView
+
+        self.loginView = LoginView()
+        self.loginView.showMaximized()
+        self.close()
+
     #      self.setupConnections()
 
     # def setupConnections(self):

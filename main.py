@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication
 from app.database.init.init import initialize_db
 from app.views.auth.LoginView import LoginView
 
@@ -12,7 +12,6 @@ initialize_db()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    ventana = LoginView()
-    ventana.show()
-    # Usamos app.exec() como en tu original
+    base = LoginView()
+    base.showMaximized()
     sys.exit(app.exec())
