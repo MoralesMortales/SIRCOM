@@ -6,226 +6,488 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>979</width>
-    <height>568</height>
+    <width>996</width>
+    <height>707</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
-    background-color: #f6f5b2;
+   <string notr="true">#mainWindow {
+	font-family: Arial;
 }
 
-QLabel#labelTitulo {
+QLabel {
+    font-size: 18px;
+    color: #222;
+}
+
+#labelAdd{
+	font-size:24px;
+}
+
+#menu {
+    background: #D9D9D9;
+    border-bottom: 1.5px solid #bdbdbd;
+}
+
+#menu QLabel {
+    font-size: 16px;
+    color: #222;
+}
+
+#menu QWidget:hover {
+    background: #e0e0e0;
+}
+
+#menu QWidget[active=&quot;true&quot;] {
+    background: #ffffff;
+    border-bottom: 3px solid #487c7e;
+}
+
+#menu QWidget[active=&quot;true&quot;] QLabel {
     font-weight: bold;
-    color: #000000;
-    padding: 10px;
 }
 
-#inputBuscar {
-    background-color: #dcdcdc;
-    border: 1px solid #999;
+#menu QWidget {
+    border-right: 1px solid #bdbdbd;
+    border-left: 1px solid #bdbdbd;
+
+}
+
+
+
+QLabel#labelTitulo{
+    font-size: 36px;
+    font-weight: 600;
+    color: #222;
+}
+
+QPushButton#btnAdd {
+    background: transparent;
+    font-size: 36px;
+    color: #222;
+    border: none;
+}
+QPushButton#btnAdd:hover {
+    color: #444;
+}
+
+QToolButton {
+    background: transparent;
+    border: none;
+}
+QToolButton:hover {
+    background: #dcdcdc;
     border-radius: 4px;
-    padding: 4px 10px;
 }
-#inputBuscar:hover {
-    background-color: #c0c0c0;
+
+QPushButton#btnBack {
+    background: transparent;
+    border: none;
+    font-size: 36px;
+    color: #222;
 }
+QPushButton#btnBack:hover {
+    color: #555;
+}
+
 
 QTableWidget {
-    background-color: #c6d8b6; 
-    border: 1px solid #666;
+    background: #D9D9D9;
+    gridline-color: #bcbcbc;
     border-radius: 8px;
-    gridline-color: #444;
+    font-size: 14px;
+    color: #222;
 }
+
 QHeaderView::section {
-    background-color: #e8e8e8;
-    color: #000;
+    background: #d0d0d0;
+    padding: 6px 4px;
     font-weight: bold;
-    border: 1px solid #666;
-    padding: 4px;
+    border: 1px solid #b4b4b4;
 }
 
 QTableWidget::item {
-    background-color: #d2e3c6;
-    border: 1px solid #555;
     padding: 6px;
 }
+
 QTableWidget::item:selected {
-    background-color: #a4c686;
+    background: #c6d3d6;
     color: #000;
 }
 
-QPushButton#btnLateral {
-    background-color: #dcdcdc;
-    border: 1px solid #aaa;
-    border-radius: 12px;
-    padding: 4px;
+QScrollBar:vertical,
+QScrollBar:horizontal {
+    background: #dcdcdc;
+    border-radius: 4px;
 }
-QPushButton#btnLateral:hover {
-    background-color: #e8e797;
+
+QScrollBar::handle {
+    background: #aaaaaa;
+    border-radius: 4px;
+}
+QScrollBar::handle:hover {
+    background: #888888;
+}
+
+#tablaContenedor {
+    background: #7835ff;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+QLineEdit {
+    background: #DFDFDF;
+    border-radius: 4px;
+    padding: 6px;
+    border: 1px solid #c4c4c4;
+    font-size: 20px;
+}
+
+QLineEdit:focus {
+    border: 1px solid #487c7e;
+}
+
+QPushButton#btnComprar {
+    background: #b9e3a6;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 26px;
+    font-size: 16px;
+}
+
+QPushButton#btnComprar:hover {
+    background: #a3d68c;
 }
 </string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_2">
+  <layout class="QHBoxLayout" name="horizontalLayout_3">
    <property name="leftMargin">
-    <number>50</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>50</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>50</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>50</number>
+    <number>0</number>
    </property>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>10</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
-     </property>
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,100">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="spacing">
-        <number>36</number>
+      <widget class="QWidget" name="menu" native="true">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QWidget" name="menuItemProveedores" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelMenuProveedores">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Proveedores</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelIconProveedores">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>10</width>
+               <height>10</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap>../../../Downloads/proveedores.svg</pixmap>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="menuItemInventario" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelMenuInventario">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Inventario</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelIconInventario">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap>../../../Downloads/inventario.svg</pixmap>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="menuItemRecursos" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelMenuRecursos">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Comprar recursos</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelIconRecursos">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap>../../../Downloads/compra.svg</pixmap>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="menuItemHistorial" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelMenuHistorial">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Historial</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelIconHistorial">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap>../../../Downloads/historial.svg</pixmap>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,20">
+       <property name="leftMargin">
+        <number>50</number>
        </property>
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMinimumSize</enum>
+       <property name="topMargin">
+        <number>25</number>
+       </property>
+       <property name="rightMargin">
+        <number>50</number>
+       </property>
+       <property name="bottomMargin">
+        <number>25</number>
        </property>
        <item>
-        <widget class="QLabel" name="labelTitulo">
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2">
+         <item>
+          <widget class="QLabel" name="labelTitulo">
+           <property name="text">
+            <string>Historial</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidgetHistorial">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="sizeIncrement">
-          <size>
-           <width>2</width>
-           <height>2</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>24</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Historial</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="inputBuscar">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Buscar</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <property name="spacing">
-        <number>36</number>
-       </property>
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMinimumSize</enum>
-       </property>
-       <item>
-        <widget class="QPushButton" name="btnLateral">
-         <property name="minimumSize">
-          <size>
-           <width>30</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>➔</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTableWidget" name="tableHistorial">
          <property name="lineWidth">
-          <number>0</number>
+          <number>1</number>
          </property>
-         <property name="horizontalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
+         <property name="midLineWidth">
+          <number>1</number>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
          <attribute name="horizontalHeaderVisible">
           <bool>true</bool>
          </attribute>
          <attribute name="horizontalHeaderCascadingSectionResizes">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="horizontalHeaderMinimumSectionSize">
-          <number>100</number>
+          <bool>false</bool>
          </attribute>
          <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>100</number>
-         </attribute>
-         <attribute name="horizontalHeaderHighlightSections">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-          <bool>false</bool>
+          <number>285</number>
          </attribute>
          <attribute name="horizontalHeaderStretchLastSection">
           <bool>true</bool>
          </attribute>
          <column>
           <property name="text">
-           <string>Acción</string>
-          </property>
-          <property name="textAlignment">
-           <set>AlignCenter</set>
+           <string>Usuario</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Nombre</string>
-          </property>
-          <property name="textAlignment">
-           <set>AlignCenter</set>
+           <string>Fecha</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Proveedor / Comprador</string>
-          </property>
-          <property name="textAlignment">
-           <set>AlignCenter</set>
+           <string>Hora</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Ver más</string>
+           <string>Total</string>
           </property>
-          <property name="textAlignment">
-           <set>AlignCenter</set>
+         </column>
+         <column>
+          <property name="text">
+           <string>Ver factura</string>
           </property>
          </column>
         </widget>

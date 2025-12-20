@@ -16,12 +16,33 @@ def authData(cedula, clave):
             cursor = connection.cursor()
             cursor.execute(
                 """
-                SELECT cedula, clave 
-                FROM usuarios WHERE (cedula, clave) = (?,?)
+                SELECT cedula, contrasena 
+                FROM usuario WHERE (cedula, contrasena) = (?,?)
                 """,
                 (cedula, clave),
             )
             return cursor.fetchone()
+        except sqlite3.Error as e:
+            print(f"Error al obtener detalles: {e}")
+            return None
+        finally:
+            connection.close()
+
+def authCedula(cedula):
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                """
+                SELECT primerNombre 
+                FROM usuario WHERE (cedula) = (?)
+                """,
+                (cedula,),
+            )
+            user = cursor.fetchone()
+            print(user)
+            return user
         except sqlite3.Error as e:
             print(f"Error al obtener detalles: {e}")
             return None

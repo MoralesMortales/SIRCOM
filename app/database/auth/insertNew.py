@@ -24,11 +24,137 @@ def newUser(cedula, primerNombre, primerApellido, correo, clave):
             return True
         
         except sqlite3.IntegrityError as e:
-            print(f"Error de Integridad (Dato duplicado o nulo): {e}")
+            print(f"Integrity Error): {e}")
             return False       
         
         except sqlite3.Error as e:
             print(f"Error inserting new user: {e}")
+            return False
+        
+        finally:
+            connection.close()
+
+def newProduct(nombre, precioUnitario, stock, RIF):
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                """
+                insert into producto (nombre, precioUnitario,stock,rifProveedor) VALUES (?,?,?,?)
+                """,
+                (nombre, precioUnitario,stock, RIF),
+            )
+            connection.commit()
+            return True
+        
+        except sqlite3.IntegrityError as e:
+            print(f"Integrity Error): {e}")
+            return False       
+        
+        except sqlite3.Error as e:
+            print(f"Error inserting new product: {e}")
+            return False
+        
+        finally:
+            connection.close()
+            
+def newProvider(RIF, nombreEmpresa, DireccionEmpresa, telefono, correo):
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                """
+                insert into proveedor (rif, nombreEmpresa,DireccionEmpresa,telefono,correo) VALUES (?,?,?,?,?)
+                """,
+                (RIF, nombreEmpresa,DireccionEmpresa, telefono, correo),
+            )
+            connection.commit()
+            return True
+        
+        except sqlite3.IntegrityError as e:
+            print(f"Integrity Error): {e}")
+            return False       
+        
+        except sqlite3.Error as e:
+            print(f"Error inserting new provider: {e}")
+            return False
+        
+        finally:
+            connection.close()
+            
+
+def newInventoryProduct(codigoProducto, cantidad):
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                """
+                insert into productosInventario (codigoProducto, cantidad) VALUES (?,?)
+                """,
+                (codigoProducto, cantidad),
+            )
+            connection.commit()
+            return True
+        
+        except sqlite3.IntegrityError as e:
+            print(f"Integrity Error): {e}")
+            return False       
+        
+        except sqlite3.Error as e:
+            print(f"Error inserting new product in inventory: {e}")
+            return False
+        
+        finally:
+            connection.close()
+            
+def newcompra(totalCompra, nombreUsuario):
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                """
+                insert into compra (totalCompra, nombreUsuario) VALUES (?,?)
+                """,
+                (totalCompra, nombreUsuario),
+            )
+            connection.commit()
+            return True
+        
+        except sqlite3.IntegrityError as e:
+            print(f"Integrity Error): {e}")
+            return False       
+        
+        except sqlite3.Error as e:
+            print(f"Error inserting new product: {e}")
+            return False
+        
+        finally:
+            connection.close()
+            
+def newDetailCompra(idCompra, codigoProducto, cantidad, precioUnitario, subTotal):
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                """
+                insert into detalleCompra (idCompra, codigoProducto, cantidad, precioUnitario, subTotal) VALUES (?,?,?,?,?)
+                """,
+                (idCompra, codigoProducto, cantidad, precioUnitario, subTotal),
+            )
+            connection.commit()
+            return True
+        
+        except sqlite3.IntegrityError as e:
+            print(f"Integrity Error): {e}")
+            return False       
+        
+        except sqlite3.Error as e:
+            print(f"Error inserting new product in inventory: {e}")
             return False
         
         finally:

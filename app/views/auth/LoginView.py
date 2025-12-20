@@ -10,10 +10,39 @@ class LoginView(QtWidgets.QWidget, Ui_Form):
         self.setWindowTitle("Autenticación")
         self.forgotView = ForgotView()
         self.labelLink.mousePressEvent = self.goToForgot
-
+        self.buttonLogin.clicked.connect(self.goInto)
+        
     def goToForgot(self, event):
         self.forgotView.showMaximized()
         self.close()
+
+    def goInto(self):
+        cedula = self.lineEditUser.text().strip()
+        password = self.lineEditPass.text().strip()
+        
+        if not cedula:
+            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese su cédula")
+            self.lineEditUser.setFocus()
+            return
+        
+        elif not password:
+            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese su contraseña")
+            self.lineEditPass.setFocus()
+            return
+        
+        elif authData(cedula, password):
+            from app.views.management.providers.ProvidersView import ProvidersView
+            from app import session
+            
+            session.currentUserCedula = cedula
+            
+            self.ProvidersView = ProvidersView()
+            self.ProvidersView.showMaximized()
+            self.close()
+            
+        else:
+            QtWidgets.QMessageBox.warning(self, "Error", "No existe un usuario con esas credenciales")
+
         
     #      self.setupConnections()
 

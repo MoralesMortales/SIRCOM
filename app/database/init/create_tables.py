@@ -22,7 +22,8 @@ def create_tables():
           nombreEmpresa TEXT,
           direccionEmpresa TEXT,
           telefono INTEGER,
-          correo TEXT
+          correo TEXT,
+          estado INTEGER DEFAULT 1
         );""",
 
           """CREATE TABLE IF NOT EXISTS usuario (
@@ -30,7 +31,8 @@ def create_tables():
           primerNombre TEXT,
           primerApellido TEXT,
           correo TEXT UNIQUE,
-          contrasena TEXT
+          contrasena TEXT,
+          creado DATETIME DEFAULT CURRENT_TIMESTAMP
         );""",
 
           """CREATE TABLE IF NOT EXISTS producto (
@@ -39,15 +41,15 @@ def create_tables():
           precioUnitario FLOAT,
           stock INTEGER,
           rifProveedor INTEGER,
+          estado INTEGER DEFAULT 1,
           FOREIGN KEY (rifProveedor) REFERENCES proveedor (rif)
         );""",
 
             """CREATE TABLE IF NOT EXISTS compra (
           idCompra INTEGER PRIMARY KEY AUTOINCREMENT,
-          fechaCompra DATE,
+          fechaCompra DATETIME DEFAULT CURRENT_TIMESTAMP,
           totalCompra FLOAT,
-          cedulaUsuario INTEGER,
-          FOREIGN KEY (cedulaUsuario) REFERENCES usuario (cedula)
+          nombreUsuario TEXT
         );""",
 
           """CREATE TABLE IF NOT EXISTS detalleCompra (
@@ -59,7 +61,15 @@ def create_tables():
           subTotal FLOAT,
           FOREIGN KEY (idCompra) REFERENCES compra (idCompra),
           FOREIGN KEY (codigoProducto) REFERENCES producto (codigo)
-        );"""
+        );""",
+        
+          """CREATE TABLE IF NOT EXISTS productosInventario (
+          codigo INTEGER PRIMARY KEY AUTOINCREMENT,
+          codigoProducto INTEGER,
+          cantidad INTEGER,
+          FOREIGN KEY (codigoProducto) REFERENCES producto (codigo)
+        );""",
+        
           ]
 
         for statement in sql_statements:

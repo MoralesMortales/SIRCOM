@@ -92,12 +92,8 @@ class RegisterView(QtWidgets.QWidget, Ui_Form):
 
         if newUser(cedula, fisrtName.capitalize(), lastName.capitalize(), correo, password):
             QtWidgets.QMessageBox.warning(self, "Exito", "Usuario creado")
+            self.comeBack()
 
         else:
             QtWidgets.QMessageBox.warning(self, "Error", "Usuario no creado")
-
-    # def openWindow(self):
-    #     self.inventoryView = inventoryMainView()
-    #     self.inventoryView.showMaximized()
-    #     self.close()
 

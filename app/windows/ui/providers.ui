@@ -58,7 +58,7 @@ QLabel {
 
 
 
-QLabel#labelTitulo{
+QLabel#labelTituloProveedores{
     font-size: 36px;
     font-weight: 600;
     color: #222;
@@ -78,11 +78,11 @@ QToolButton {
     background: transparent;
     border: none;
 }
+
 QToolButton:hover {
     background: #dcdcdc;
     border-radius: 4px;
 }
-
 QPushButton#btnBack {
     background: transparent;
     border: none;
@@ -137,19 +137,6 @@ QScrollBar::handle:hover {
     border-radius: 10px;
     padding: 8px;
 }
-
-QLineEdit {
-    background: #DFDFDF;
-    border-radius: 4px;
-    padding: 6px;
-    border: 1px solid #c4c4c4;
-    font-size: 20px;
-}
-
-QLineEdit:focus {
-    border: 1px solid #487c7e;
-}
-
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -401,7 +388,7 @@ QLineEdit:focus {
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,20,0">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,20">
        <property name="leftMargin">
         <number>50</number>
        </property>
@@ -415,45 +402,36 @@ QLineEdit:focus {
         <number>25</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,0,1">
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="3,1">
          <item>
-          <widget class="QLabel" name="labelTitulo">
+          <widget class="QLabel" name="labelTituloProveedores">
            <property name="text">
-            <string>Inventario</string>
+            <string>Proveedores</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="labelFiltro">
-           <property name="maximumSize">
-            <size>
-             <width>25</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap>icons/filtroBuscar.svg</pixmap>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0">
            <item>
-            <widget class="QLineEdit" name="lineEditBuscar">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+            <widget class="QLabel" name="labelAdd">
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
              </property>
-             <property name="placeholderText">
-              <string>Buscar</string>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="text">
+              <string>Añadir</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnAdd">
+             <property name="text">
+              <string>+</string>
              </property>
             </widget>
            </item>
@@ -462,7 +440,7 @@ QLineEdit:focus {
         </layout>
        </item>
        <item>
-        <widget class="QTableWidget" name="tableWidgetInventario">
+        <widget class="QTableWidget" name="tableWidget">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
@@ -485,29 +463,34 @@ QLineEdit:focus {
           <bool>false</bool>
          </attribute>
          <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>225</number>
+          <number>150</number>
          </attribute>
          <attribute name="horizontalHeaderStretchLastSection">
           <bool>true</bool>
          </attribute>
          <column>
           <property name="text">
-           <string>Código</string>
+           <string>Nombre de la empresa</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Articulo</string>
+           <string>Dirección</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Proveedor</string>
+           <string>Teléfono</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Cantidad</string>
+           <string>Correo</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>RIF</string>
           </property>
          </column>
          <column>
@@ -516,38 +499,6 @@ QLineEdit:focus {
           </property>
          </column>
         </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="labelAdminUsers">
-           <property name="font">
-            <font>
-             <pointsize>-1</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt; color:#505050;&quot;&gt;Administrar usuarios&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </item>
       </layout>
      </item>
