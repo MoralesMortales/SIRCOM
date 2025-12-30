@@ -28,7 +28,7 @@ QLabel {
 }
 
 #menu {
-    background: #D9D9D9;
+    background: #EAEB8C;
     border-bottom: 1.5px solid #bdbdbd;
 }
 
@@ -95,7 +95,7 @@ QPushButton#btnBack:hover {
 
 
 QTableWidget {
-    background: #D9D9D9;
+    background: #EAEB8C;
     gridline-color: #bcbcbc;
     border-radius: 8px;
     font-size: 14px;
@@ -103,7 +103,7 @@ QTableWidget {
 }
 
 QHeaderView::section {
-    background: #d0d0d0;
+    background: #EBEC8D;
     padding: 6px 4px;
     font-weight: bold;
     border: 1px solid #b4b4b4;
@@ -536,7 +536,7 @@ QLineEdit:focus {
           <widget class="QLabel" name="labelAdminUsers">
            <property name="font">
             <font>
-             <pointsize>-1</pointsize>
+             <pointsize>1</pointsize>
             </font>
            </property>
            <property name="text">

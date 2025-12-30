@@ -92,7 +92,7 @@ def getProviderProducts(rif):
     if connection:
         try:
             cursor = connection.cursor()
-            cursor.execute("SELECT codigo, nombre ,stock, precioUnitario FROM producto WHERE (rifProveedor) = (?);",(rif,))
+            cursor.execute("SELECT codigo, nombre ,stock, precioUnitario, descuentoDesde, descuento, stockMinimo FROM producto WHERE (rifProveedor) = (?);",(rif,))
             products = cursor.fetchall()
             return products
         except sqlite3.Error as e:
@@ -106,7 +106,7 @@ def getProduct(id):
     if connection:
         try:
             cursor = connection.cursor()
-            cursor.execute("SELECT p.codigo, p.nombre, pr.nombreEmpresa, p.stock, p.precioUnitario FROM producto p JOIN proveedor pr ON p.rifProveedor = pr.rif WHERE p.codigo = ?", (id,))
+            cursor.execute("SELECT p.codigo, p.nombre, pr.nombreEmpresa, p.stock, p.precioUnitario, p.rifProveedor, p.descuento, p.descuentoDesde FROM producto p JOIN proveedor pr ON p.rifProveedor = pr.rif WHERE p.codigo = ?", (id,))
             product = cursor.fetchone()
             return product
         except sqlite3.Error as e:
@@ -162,7 +162,7 @@ def getInventoryProducts():
     if connection:
         try:
             cursor = connection.cursor()
-            cursor.execute("SELECT i.codigo, pr.nombre, prov.nombreEmpresa, i.cantidad FROM productosInventario i JOIN producto pr ON i.codigoProducto = pr.codigo JOIN proveedor prov ON pr.rifProveedor = prov.rif;")
+            cursor.execute("SELECT i.codigo, pr.nombre, prov.nombreEmpresa, i.cantidad, i.stock_minimo FROM productosInventario i JOIN producto pr ON i.codigoProducto = pr.codigo JOIN proveedor prov ON pr.rifProveedor = prov.rif;")
             products = cursor.fetchall()
             return products
         except sqlite3.Error as e:
@@ -176,9 +176,9 @@ def getAllCompras():
     if connection:
         try:
             cursor = connection.cursor()
-            cursor.execute("SELECT idCompra, nombreUsuario, fechaCompra, totalCompra FROM compra;")
+            cursor.execute("SELECT idCompra, nombreUsuario, fechaCompra, totalCompra FROM compra ORDER BY fechaCompra DESC;")
             data = cursor.fetchall()
-            return data
+            return data 
         except sqlite3.Error as e:
             print(f"Error getting product details: {e}")
             return None

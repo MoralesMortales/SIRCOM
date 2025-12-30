@@ -39,6 +39,11 @@ def create_tables():
           codigo INTEGER PRIMARY KEY AUTOINCREMENT,
           nombre TEXT,
           precioUnitario FLOAT,
+          
+          descuentoDesde INTEGER,
+          descuento INTEGER,
+          stockMinimo INTEGER,
+          
           stock INTEGER,
           rifProveedor INTEGER,
           estado INTEGER DEFAULT 1,
@@ -67,6 +72,7 @@ def create_tables():
           codigo INTEGER PRIMARY KEY AUTOINCREMENT,
           codigoProducto INTEGER,
           cantidad INTEGER,
+          stock_minimo INTEGER,
           FOREIGN KEY (codigoProducto) REFERENCES producto (codigo)
         );""",
         

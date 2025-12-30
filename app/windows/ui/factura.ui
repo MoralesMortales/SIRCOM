@@ -14,8 +14,9 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#mainWindow {
+   <string notr="true">QMainWindow {
 	font-family: Arial;
+    background-color: #F0F6F9;
 }
 
 QLabel {
@@ -23,13 +24,11 @@ QLabel {
     color: #222;
 }
 
-#labelAdd{
-	font-size:24px;
-}
-
-#menu {
-    background: #EAEB8C;
-    border-bottom: 1.5px solid #bdbdbd;
+#menu{
+    background-color: #907c83;
+    color: #000000;
+    border: 1px solid #7f5b5f;
+    border-bottom: 1.5px solid #7f5b5f;
 }
 
 #menu QLabel {
@@ -38,12 +37,12 @@ QLabel {
 }
 
 #menu QWidget:hover {
-    background: #e0e0e0;
+    background: #7f5b5f;
 }
 
 #menu QWidget[active=&quot;true&quot;] {
-    background: #ffffff;
-    border-bottom: 3px solid #487c7e;
+    background: #7f5b5f;
+    border-bottom: 3px solid #7f5b5f;
 }
 
 #menu QWidget[active=&quot;true&quot;] QLabel {
@@ -51,28 +50,87 @@ QLabel {
 }
 
 #menu QWidget {
-    border-right: 1px solid #bdbdbd;
-    border-left: 1px solid #bdbdbd;
+    border-right: 1px solid #7f5b5f;
+    border-left: 1px solid #7f5b5f;
+}
 
+QTableWidget {
+    background-color: #EAEB8C;
+    alternate-background-color: #FFFFF0; 
+    gridline-color: #7f5b5f;          
+    border: 1px solid #7f5b5f;
+    border-radius: 4px;
+    selection-background-color: #FFFFCC; 
+    selection-color: #000000;
+}
+
+QHeaderView::section {
+    background-color: #EAEB8C;       
+    color: #000000;
+    font-weight: bold;
+    padding: 4px;
+    border: 1px solid #7f5b5f;        
+}
+
+QPushButton {
+    background-color: #FFFF99;         
+    color: #000000;
+    border: 1px solid #7f5b5f;         
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: normal;
+}
+
+QPushButton:hover {
+    background-color: #FFFF77;         
+    border-color: #DDDD66;           
+}
+
+QPushButton:pressed {
+    background-color: #DDDD66;          
 }
 
 QLineEdit {
-    background: white;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 2px solid #7a7a7a;
     border-radius: 4px;
     padding: 6px;
-    border: 1px solid #c4c4c4;
-    font-size: 20px;
+    selection-background-color: #FFFFCC;
 }
 
 QLineEdit:focus {
-    border: 1px solid #487c7e;
+    border: 2px solid #666666;    
 }
 
-QLabel#labelTitulo{
-    font-size: 36px;
-    font-weight: 600;
-    color: #222;
+QLabel#labelTitulo {
+    color: #000000;
+    font-weight: bold;
+    font-size: 24px;
 }
+
+QScrollBar:vertical, QScrollBar:horizontal {
+    background-color: #FFFFF1;
+}
+
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+    background-color: #d9d9d9;       
+}
+
+QScrollBar::handle:hover {
+    background-color: #bdbdbd;        
+}
+
+QHeaderView::section:hover {
+    background-color: #FFFF77;         
+}
+
+QTableWidget::item:hover {
+    background-color: #FFFFCC;        
+}
+
+
+
 
 QPushButton#btnAdd {
     background: transparent;
@@ -104,29 +162,6 @@ QPushButton#btnBack:hover {
 }
 
 
-QTableWidget {
-    background: #EAEB8C;
-    gridline-color: #bcbcbc;
-    border-radius: 8px;
-    font-size: 14px;
-    color: #222;
-}
-
-QHeaderView::section {
-    background: #EBEC8D;
-    padding: 6px 4px;
-    font-weight: bold;
-    border: 1px solid #b4b4b4;
-}
-
-QTableWidget::item {
-    padding: 6px;
-}
-
-QTableWidget::item:selected {
-    background: #c6d3d6;
-    color: #000;
-}
 
 QScrollBar:vertical,
 QScrollBar:horizontal {
@@ -142,11 +177,6 @@ QScrollBar::handle:hover {
     background: #888888;
 }
 
-#tablaContenedor {
-    background: #7835ff;
-    border-radius: 10px;
-    padding: 8px;
-}
 
 QPushButton#btnAddProducto,
 QPushButton#btnRemoveProducto {
@@ -185,15 +215,21 @@ QPushButton#btnGuardar:hover {
     background: #a3d68c;
 }
 
-#panelRegistro {
-    background: #e0e0e0;
-    border-radius: 8px;
-	border: 1.5px solid #b8b8b8;
-    padding: 16px;
-}
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
      <item>
@@ -211,11 +247,18 @@ QPushButton#btnGuardar:hover {
         <number>25</number>
        </property>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0">
+        <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0">
          <item>
           <widget class="QLabel" name="labelTitulo">
            <property name="text">
-            <string>Usuarios</string>
+            <string>Factura N°X</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>XX-XX-XX / XX:XX</string>
            </property>
           </widget>
          </item>
@@ -246,7 +289,7 @@ QPushButton#btnGuardar:hover {
              <number>0</number>
             </property>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_6" stretch="2">
+             <layout class="QVBoxLayout" name="verticalLayout_6" stretch="2,1">
               <item>
                <widget class="QTableWidget" name="tableProducto">
                 <property name="minimumSize">
@@ -259,7 +302,7 @@ QPushButton#btnGuardar:hover {
                  <number>50</number>
                 </attribute>
                 <attribute name="horizontalHeaderDefaultSectionSize">
-                 <number>200</number>
+                 <number>165</number>
                 </attribute>
                 <attribute name="horizontalHeaderStretchLastSection">
                  <bool>true</bool>
@@ -267,37 +310,104 @@ QPushButton#btnGuardar:hover {
                 <attribute name="verticalHeaderDefaultSectionSize">
                  <number>30</number>
                 </attribute>
-                <row>
-                 <property name="text">
-                  <string>-</string>
-                 </property>
-                </row>
                 <column>
                  <property name="text">
-                  <string>Nombre</string>
+                  <string>Código</string>
                  </property>
                 </column>
                 <column>
                  <property name="text">
-                  <string>Apellido</string>
+                  <string>Producto</string>
                  </property>
                 </column>
                 <column>
                  <property name="text">
-                  <string>Cédula</string>
+                  <string>Proveedor</string>
                  </property>
                 </column>
                 <column>
                  <property name="text">
-                  <string>Correo</string>
+                  <string>RIF</string>
                  </property>
                 </column>
                 <column>
                  <property name="text">
-                  <string>Creación de cuenta</string>
+                  <string>Cantidad</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Precio unitario</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>IVA</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Descuento</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Subtotal</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Total</string>
                  </property>
                 </column>
                </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <item>
+                 <spacer name="horizontalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QTableWidget" name="tableWidget">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>65</height>
+                   </size>
+                  </property>
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>100</number>
+                  </attribute>
+                  <attribute name="verticalHeaderDefaultSectionSize">
+                   <number>50</number>
+                  </attribute>
+                  <attribute name="verticalHeaderStretchLastSection">
+                   <bool>true</bool>
+                  </attribute>
+                  <row>
+                   <property name="text">
+                    <string>Total</string>
+                   </property>
+                  </row>
+                 </widget>
+                </item>
+               </layout>
               </item>
              </layout>
             </item>
@@ -307,7 +417,15 @@ QPushButton#btnGuardar:hover {
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_6"/>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Compra realizada por: XXXXXXXXXXXXX</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <spacer name="verticalSpacer">
@@ -345,7 +463,7 @@ QPushButton#btnGuardar:hover {
             </size>
            </property>
            <property name="text">
-            <string>Volver</string>
+            <string>Salir</string>
            </property>
           </widget>
          </item>

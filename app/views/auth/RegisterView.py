@@ -41,7 +41,7 @@ class RegisterView(QtWidgets.QWidget, Ui_Form):
         fisrtName = self.lineEditNombre.text().strip()
         lastName = self.lineEditApellido.text().strip()
         password = self.lineEditPass.text().strip()
-        confirmPassword = self.lineEditPass_2.text().strip()
+        confirmPassword = self.lineEdit_3.text().strip()
         
         if not cedula:
             QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese su cédula")

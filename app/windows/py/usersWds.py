@@ -29,7 +29,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "#menu {\n"
-"    background: #D9D9D9;\n"
+"    background: #907c83;\n"
 "    border-bottom: 1.5px solid #bdbdbd;\n"
 "}\n"
 "\n"
@@ -39,7 +39,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "#menu QWidget:hover {\n"
-"    background: #e0e0e0;\n"
+"    background: #7f5b5f;\n"
 "}\n"
 "\n"
 "#menu QWidget[active=\"true\"] {\n"
@@ -106,7 +106,7 @@ class Ui_Form(object):
 "\n"
 "\n"
 "QTableWidget {\n"
-"    background: #D9D9D9;\n"
+"    background: #EAEB8C;\n"
 "    gridline-color: #bcbcbc;\n"
 "    border-radius: 8px;\n"
 "    font-size: 14px;\n"
@@ -114,7 +114,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "QHeaderView::section {\n"
-"    background: #d0d0d0;\n"
+"    background: #EBEC8D;\n"
 "    padding: 6px 4px;\n"
 "    font-weight: bold;\n"
 "    border: 1px solid #b4b4b4;\n"
@@ -250,7 +250,7 @@ class Ui_Form(object):
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem1)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_5.setContentsMargins(250, -1, 250, 0)
+        self.horizontalLayout_5.setContentsMargins(250, 1, 250, 0)
         self.horizontalLayout_5.setSpacing(60)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.btnCancelar = QtWidgets.QPushButton(Form)

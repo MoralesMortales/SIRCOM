@@ -34,16 +34,16 @@ def newUser(cedula, primerNombre, primerApellido, correo, clave):
         finally:
             connection.close()
 
-def newProduct(nombre, precioUnitario, stock, RIF):
+def newProduct(nombre, precioUnitario, stock, RIF,min_desc=0, descuento=0, stock_min=0):
     connection = connectDB()
     if connection:
         try:
             cursor = connection.cursor()
             cursor.execute(
                 """
-                insert into producto (nombre, precioUnitario,stock,rifProveedor) VALUES (?,?,?,?)
-                """,
-                (nombre, precioUnitario,stock, RIF),
+INSERT INTO producto (nombre, precioUnitario, stock, rifProveedor, descuentoDesde, descuento, stockMinimo)
+        VALUES (?, ?, ?, ?, ?, ?, ?)                """,
+                (nombre, precioUnitario,stock, RIF, min_desc, descuento, stock_min),
             )
             connection.commit()
             return True
@@ -92,9 +92,9 @@ def newInventoryProduct(codigoProducto, cantidad):
             cursor = connection.cursor()
             cursor.execute(
                 """
-                insert into productosInventario (codigoProducto, cantidad) VALUES (?,?)
+                insert into productosInventario (codigoProducto, cantidad, stock_minimo) VALUES (?,?,?)
                 """,
-                (codigoProducto, cantidad),
+                (codigoProducto, cantidad, 0),
             )
             connection.commit()
             return True

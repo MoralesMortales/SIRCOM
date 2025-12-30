@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './app/windows/ui/purchase.ui'
+# Form implementation generated from reading ui file './app/windows/ui/factura.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -15,8 +15,9 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(996, 694)
-        Form.setStyleSheet("#mainWindow {\n"
+        Form.setStyleSheet("QMainWindow {\n"
 "    font-family: Arial;\n"
+"    background-color: #F0F6F9;\n"
 "}\n"
 "\n"
 "QLabel {\n"
@@ -24,13 +25,11 @@ class Ui_Form(object):
 "    color: #222;\n"
 "}\n"
 "\n"
-"#labelAdd{\n"
-"    font-size:24px;\n"
-"}\n"
-"\n"
-"#menu {\n"
-"    background: #D9D9D9;\n"
-"    border-bottom: 1.5px solid #bdbdbd;\n"
+"#menu{\n"
+"    background-color: #907c83;\n"
+"    color: #000000;\n"
+"    border: 1px solid #7f5b5f;\n"
+"    border-bottom: 1.5px solid #7f5b5f;\n"
 "}\n"
 "\n"
 "#menu QLabel {\n"
@@ -39,12 +38,12 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "#menu QWidget:hover {\n"
-"    background: #e0e0e0;\n"
+"    background: #7f5b5f;\n"
 "}\n"
 "\n"
 "#menu QWidget[active=\"true\"] {\n"
-"    background: #ffffff;\n"
-"    border-bottom: 3px solid #487c7e;\n"
+"    background: #7f5b5f;\n"
+"    border-bottom: 3px solid #7f5b5f;\n"
 "}\n"
 "\n"
 "#menu QWidget[active=\"true\"] QLabel {\n"
@@ -52,28 +51,87 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "#menu QWidget {\n"
-"    border-right: 1px solid #bdbdbd;\n"
-"    border-left: 1px solid #bdbdbd;\n"
+"    border-right: 1px solid #7f5b5f;\n"
+"    border-left: 1px solid #7f5b5f;\n"
+"}\n"
 "\n"
+"QTableWidget {\n"
+"    background-color: #EAEB8C;\n"
+"    alternate-background-color: #FFFFF0; \n"
+"    gridline-color: #7f5b5f;          \n"
+"    border: 1px solid #7f5b5f;\n"
+"    border-radius: 4px;\n"
+"    selection-background-color: #FFFFCC; \n"
+"    selection-color: #000000;\n"
+"}\n"
+"\n"
+"QHeaderView::section {\n"
+"    background-color: #EAEB8C;       \n"
+"    color: #000000;\n"
+"    font-weight: bold;\n"
+"    padding: 4px;\n"
+"    border: 1px solid #7f5b5f;        \n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"    background-color: #FFFF99;         \n"
+"    color: #000000;\n"
+"    border: 1px solid #7f5b5f;         \n"
+"    border-radius: 6px;\n"
+"    padding: 8px 16px;\n"
+"    font-weight: normal;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #FFFF77;         \n"
+"    border-color: #DDDD66;           \n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #DDDD66;          \n"
 "}\n"
 "\n"
 "QLineEdit {\n"
-"    background: white;\n"
+"    background-color: #FFFFFF;\n"
+"    color: #000000;\n"
+"    border: 2px solid #7a7a7a;\n"
 "    border-radius: 4px;\n"
 "    padding: 6px;\n"
-"    border: 1px solid #c4c4c4;\n"
-"    font-size: 20px;\n"
+"    selection-background-color: #FFFFCC;\n"
 "}\n"
 "\n"
 "QLineEdit:focus {\n"
-"    border: 1px solid #487c7e;\n"
+"    border: 2px solid #666666;    \n"
 "}\n"
 "\n"
-"QLabel#labelTitulo{\n"
-"    font-size: 36px;\n"
-"    font-weight: 600;\n"
-"    color: #222;\n"
+"QLabel#labelTitulo {\n"
+"    color: #000000;\n"
+"    font-weight: bold;\n"
+"    font-size: 24px;\n"
 "}\n"
+"\n"
+"QScrollBar:vertical, QScrollBar:horizontal {\n"
+"    background-color: #FFFFF1;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical, QScrollBar::handle:horizontal {\n"
+"    background-color: #d9d9d9;       \n"
+"}\n"
+"\n"
+"QScrollBar::handle:hover {\n"
+"    background-color: #bdbdbd;        \n"
+"}\n"
+"\n"
+"QHeaderView::section:hover {\n"
+"    background-color: #FFFF77;         \n"
+"}\n"
+"\n"
+"QTableWidget::item:hover {\n"
+"    background-color: #FFFFCC;        \n"
+"}\n"
+"\n"
+"\n"
+"\n"
 "\n"
 "QPushButton#btnAdd {\n"
 "    background: transparent;\n"
@@ -105,29 +163,6 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "\n"
-"QTableWidget {\n"
-"    background: #D9D9D9;\n"
-"    gridline-color: #bcbcbc;\n"
-"    border-radius: 8px;\n"
-"    font-size: 14px;\n"
-"    color: #222;\n"
-"}\n"
-"\n"
-"QHeaderView::section {\n"
-"    background: #d0d0d0;\n"
-"    padding: 6px 4px;\n"
-"    font-weight: bold;\n"
-"    border: 1px solid #b4b4b4;\n"
-"}\n"
-"\n"
-"QTableWidget::item {\n"
-"    padding: 6px;\n"
-"}\n"
-"\n"
-"QTableWidget::item:selected {\n"
-"    background: #c6d3d6;\n"
-"    color: #000;\n"
-"}\n"
 "\n"
 "QScrollBar:vertical,\n"
 "QScrollBar:horizontal {\n"
@@ -143,11 +178,6 @@ class Ui_Form(object):
 "    background: #888888;\n"
 "}\n"
 "\n"
-"#tablaContenedor {\n"
-"    background: #7835ff;\n"
-"    border-radius: 10px;\n"
-"    padding: 8px;\n"
-"}\n"
 "\n"
 "QPushButton#btnAddProducto,\n"
 "QPushButton#btnRemoveProducto {\n"
@@ -186,14 +216,9 @@ class Ui_Form(object):
 "    background: #a3d68c;\n"
 "}\n"
 "\n"
-"#panelRegistro {\n"
-"    background: #e0e0e0;\n"
-"    border-radius: 8px;\n"
-"    border: 1.5px solid #b8b8b8;\n"
-"    padding: 16px;\n"
-"}\n"
 "")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(Form)
+        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
@@ -224,7 +249,7 @@ class Ui_Form(object):
         self.tableProducto = QtWidgets.QTableWidget(self.panelRegistro)
         self.tableProducto.setMinimumSize(QtCore.QSize(0, 350))
         self.tableProducto.setObjectName("tableProducto")
-        self.tableProducto.setColumnCount(5)
+        self.tableProducto.setColumnCount(10)
         self.tableProducto.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableProducto.setHorizontalHeaderItem(0, item)
@@ -236,7 +261,17 @@ class Ui_Form(object):
         self.tableProducto.setHorizontalHeaderItem(3, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableProducto.setHorizontalHeaderItem(4, item)
-        self.tableProducto.horizontalHeader().setDefaultSectionSize(200)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableProducto.setHorizontalHeaderItem(5, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableProducto.setHorizontalHeaderItem(6, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableProducto.setHorizontalHeaderItem(7, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableProducto.setHorizontalHeaderItem(8, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableProducto.setHorizontalHeaderItem(9, item)
+        self.tableProducto.horizontalHeader().setDefaultSectionSize(165)
         self.tableProducto.horizontalHeader().setMinimumSectionSize(50)
         self.tableProducto.horizontalHeader().setStretchLastSection(True)
         self.tableProducto.verticalHeader().setDefaultSectionSize(30)
@@ -276,7 +311,7 @@ class Ui_Form(object):
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem2)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_5.setContentsMargins(250, -1, 250, 0)
+        self.horizontalLayout_5.setContentsMargins(250, 1, 250, 0)
         self.horizontalLayout_5.setSpacing(60)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.btnCancelar = QtWidgets.QPushButton(Form)
@@ -298,21 +333,31 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.labelTitulo.setText(_translate("Form", "Factura"))
-        self.label_2.setText(_translate("Form", "**-**-** / **:** "))
+        self.labelTitulo.setText(_translate("Form", "Factura N°X"))
+        self.label_2.setText(_translate("Form", "XX-XX-XX / XX:XX"))
         item = self.tableProducto.horizontalHeaderItem(0)
-        item.setText(_translate("Form", "Proveedor"))
+        item.setText(_translate("Form", "Código"))
         item = self.tableProducto.horizontalHeaderItem(1)
         item.setText(_translate("Form", "Producto"))
         item = self.tableProducto.horizontalHeaderItem(2)
-        item.setText(_translate("Form", "Cantidad"))
+        item.setText(_translate("Form", "Proveedor"))
         item = self.tableProducto.horizontalHeaderItem(3)
-        item.setText(_translate("Form", "Precio unitario"))
+        item.setText(_translate("Form", "RIF"))
         item = self.tableProducto.horizontalHeaderItem(4)
+        item.setText(_translate("Form", "Cantidad"))
+        item = self.tableProducto.horizontalHeaderItem(5)
+        item.setText(_translate("Form", "Precio unitario"))
+        item = self.tableProducto.horizontalHeaderItem(6)
+        item.setText(_translate("Form", "IVA"))
+        item = self.tableProducto.horizontalHeaderItem(7)
+        item.setText(_translate("Form", "Descuento"))
+        item = self.tableProducto.horizontalHeaderItem(8)
         item.setText(_translate("Form", "Subtotal"))
+        item = self.tableProducto.horizontalHeaderItem(9)
+        item.setText(_translate("Form", "Total"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("Form", "Total"))
-        self.label.setText(_translate("Form", "Compra realizada por:"))
+        self.label.setText(_translate("Form", "Compra realizada por: XXXXXXXXXXXXX"))
         self.btnCancelar.setText(_translate("Form", "Salir"))
 
 

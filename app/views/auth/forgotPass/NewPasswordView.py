@@ -16,18 +16,20 @@ class NewPasswordView(QtWidgets.QWidget, Ui_Form):
         password = self.lineEditPasscode.text().strip()
         confirmPassword = self.lineEditConfirmar.text().strip()
         if not password:
-            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese su contraseña")
+            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese su contraseña.")
             return
      
         elif not confirmPassword:
-            QtWidgets.QMessageBox.warning(self, "Error", "Por favor confirme su contraseña")
+            QtWidgets.QMessageBox.warning(self, "Error", "Por favor confirme su contraseña.")
             return
      
         elif password == confirmPassword:
-           changePassword(self.cedula, password)
+            changePassword(self.cedula, password)
+            QtWidgets.QMessageBox.information(self, "Exito", "Contraseña cambiada exitosamente.")
+            self.comeBack()
         
         else:
-            QtWidgets.QMessageBox.warning(self, "Error", "No coinciden las contraseñas")
+            QtWidgets.QMessageBox.warning(self, "Error", "No coinciden las contraseñas.")
             return
         
     def comeBack(self):

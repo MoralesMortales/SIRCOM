@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from app.database.auth.auth import authData
 from app.windows.py.loginWds import Ui_Form
 from app.views.auth.ForgotView import ForgotView
@@ -8,6 +8,10 @@ class LoginView(QtWidgets.QWidget, Ui_Form):
         super().__init__()
         self.setupUi(self)
         self.setWindowTitle("Autenticación")
+        validator = QtGui.QIntValidator(0, 99999999, self)
+        self.lineEditUser.setValidator(validator)
+        self.lineEditUser.setMaxLength(8)
+        
         self.forgotView = ForgotView()
         self.labelLink.mousePressEvent = self.goToForgot
         self.buttonLogin.clicked.connect(self.goInto)

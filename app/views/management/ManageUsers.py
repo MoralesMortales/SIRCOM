@@ -87,8 +87,8 @@ class UsersView(QWidget, Ui_Form):
         from app import session
         
         ownCode = session.currentUserCedula
-        
-        if code != ownCode:
+
+        if str(code) != str(ownCode):
             confirm = QMessageBox.question(
                 self, 
                 "Confirmar Eliminación", 

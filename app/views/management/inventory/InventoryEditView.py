@@ -24,7 +24,7 @@ class InventoryEditView(QWidget, Ui_Form):
         #styles
         self.menuItemInventario.setStyleSheet("""
         #menu QWidget {
-        background: #e0e0e0;
+        background: #7f5b5f;
         }""")
         
         self.menuItemHistorial.setCursor(QtCore.Qt.PointingHandCursor)

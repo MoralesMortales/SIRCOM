@@ -29,7 +29,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "#menu {\n"
-"    background: #D9D9D9;\n"
+"    background: #907c83;\n"
 "    border-bottom: 1.5px solid #bdbdbd;\n"
 "}\n"
 "\n"
@@ -106,7 +106,7 @@ class Ui_Form(object):
 "\n"
 "\n"
 "QTableWidget {\n"
-"    background: #D9D9D9;\n"
+"    background: #EAEB8C;\n"
 "    gridline-color: #bcbcbc;\n"
 "    border-radius: 8px;\n"
 "    font-size: 14px;\n"
@@ -114,7 +114,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "QHeaderView::section {\n"
-"    background: #d0d0d0;\n"
+"    background: #EBEC8D;\n"
 "    padding: 6px 4px;\n"
 "    font-weight: bold;\n"
 "    border: 1px solid #b4b4b4;\n"
@@ -220,6 +220,7 @@ class Ui_Form(object):
         spacerItem1 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.verticalLayout_4.addItem(spacerItem1)
         self.labelDatos = QtWidgets.QLabel(self.panelRegistro)
+        self.labelDatos.setAlignment(QtCore.Qt.AlignCenter)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -330,7 +331,7 @@ class Ui_Form(object):
         spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem6)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_5.setContentsMargins(250, -1, 250, 0)
+        self.horizontalLayout_5.setContentsMargins(250, 1, 250, 0)
         self.horizontalLayout_5.setSpacing(60)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.btnCancelar = QtWidgets.QPushButton(Form)
@@ -354,7 +355,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.labelTituloProveedores.setText(_translate("Form", "Editar Proveedor"))
+        self.labelTituloProveedores.setText(_translate("Form", "Registrar Proveedor"))
         self.labelDatos.setText(_translate("Form", "Datos de la empresa"))
         self.lineEditNameEmpresa.setPlaceholderText(_translate("Form", "Nombre de la empresa"))
         self.lineEditDireccionEmpresa.setPlaceholderText(_translate("Form", "Dirección de la empresa"))

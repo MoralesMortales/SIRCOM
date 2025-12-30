@@ -31,7 +31,7 @@ def updateProvider(rif, nombre, direccion, telefono, correo):
             connection.close()
     return False
 
-def updateProduct(codigo, nombre, precio, stock):
+def updateProduct(codigo, nombre, precio, stock, minDes, desc, stockMin, estado):
     connection = connectDB()
     if connection:
         try:
@@ -39,10 +39,10 @@ def updateProduct(codigo, nombre, precio, stock):
             cursor.execute(
                 """
                 UPDATE producto 
-                SET nombre = ?, precioUnitario = ?, stock = ?
+                SET nombre = ?, precioUnitario = ?, stock = ?, descuentoDesde = ?, descuento = ?, stockMinimo = ?, estado = ?
                 WHERE codigo = ?
                 """,
-                (nombre, precio, stock, codigo),
+                (nombre, precio, stock, minDes, desc, stockMin, estado, codigo),
             )
             connection.commit()
             return True
@@ -84,6 +84,29 @@ def updateInventoryProductQuantity(codigo, stock):
                 """
                 UPDATE productosInventario 
                 SET cantidad = ?
+                WHERE codigoProducto = ?
+                """,
+                (stock, codigo),
+            )
+            connection.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Error updating product: {e}")
+            return False
+        finally:
+            connection.close()
+    return False
+
+
+def updateInventoryProductQuantityMain(codigo, stock):
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                """
+                UPDATE productosInventario 
+                SET cantidad = ?
                 WHERE codigo = ?
                 """,
                 (stock, codigo),
@@ -97,6 +120,41 @@ def updateInventoryProductQuantity(codigo, stock):
             connection.close()
     return False
 
+def updateInventoryProductLevels(codigo, stock, min_stock):
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                "UPDATE productosInventario SET cantidad = ?, stock_minimo = ? WHERE codigo = ?",
+                (stock, min_stock, codigo),
+            )
+            connection.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Error updating levels: {e}")
+            return False
+        finally:
+            connection.close()
+    return False
+
+def updateInventoryProductMinStock(codigo, min_stock):
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                "UPDATE productosInventario SET stock_minimo = ? WHERE codigo = ?",
+                (min_stock, codigo),
+            )
+            connection.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Error updating min stock: {e}")
+            return False
+        finally:
+            connection.close()
+    return False
 def updateInventoryProductCode(codigo, newCode):
     connection = connectDB()
     if connection:
