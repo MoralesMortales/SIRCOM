@@ -8,7 +8,7 @@ def send_code(email):
     yag = yagmail.SMTP(USER,PASSWORD)
     CODE = random.randint(1000,9999)
     receiver = email
-    topic = 'Código de sistema PROCURA'
+    topic = 'Código de sistema SIRCOM'
     message = f'Sea bienvenid@ al sistema! \n\nSu código de un solo uso es: {CODE}'
     yag.send(to=receiver, subject=topic, contents=message)
     print(f'Mensaje enviado a {email}')
