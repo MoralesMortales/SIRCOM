@@ -14,7 +14,6 @@ from app.functions.tools.getIcon import getIcon
 UserIcon = getIcon("User.png")
 LogoIcon = getIcon("Logo.png")
 
-
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -184,12 +183,11 @@ class Ui_Form(object):
         self.lineEditPass.setSizePolicy(sizePolicy)
         self.lineEditPass.setMinimumSize(QtCore.QSize(0, 0))
         self.lineEditPass.setObjectName("lineEditPass")
-        self.lineEditPass.setEchoMode(QtWidgets.QLineEdit.Password)
         self.verticalLayout_4.addWidget(self.lineEditPass)
         self.labelLink = QtWidgets.QLabel(self.panelDerecho)
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(1)
+        font.setPointSize(-1)
         font.setBold(False)
         font.setItalic(False)
         font.setUnderline(False)
@@ -210,6 +208,11 @@ class Ui_Form(object):
         self.buttonLogin.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.buttonLogin.setObjectName("buttonLogin")
         self.verticalLayout.addWidget(self.buttonLogin)
+        self.buttonCreateUser = QtWidgets.QPushButton(self.panelDerecho)
+        self.buttonCreateUser.setMinimumSize(QtCore.QSize(250, 0))
+        self.buttonCreateUser.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.buttonCreateUser.setObjectName("buttonCreateUser")
+        self.verticalLayout.addWidget(self.buttonCreateUser)
         spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem6)
         self.horizontalLayout.addWidget(self.panelDerecho)
@@ -230,6 +233,7 @@ class Ui_Form(object):
         self.labelPass.setText(_translate("Form", "Contraseña"))
         self.labelLink.setText(_translate("Form", "Olvidé mi contraseña"))
         self.buttonLogin.setText(_translate("Form", "Iniciar sesión"))
+        self.buttonCreateUser.setText(_translate("Form", "Crear Usuario"))
 
 
 if __name__ == "__main__":

@@ -100,18 +100,22 @@ class Ui_Form(object):
         "}\n"
         "\n"
         "QTableWidget {\n"
-        "    background: #EAEB8C;\n"
-        "    gridline-color: #bcbcbc;\n"
+        "    background: #ededed;\n"
+        "    gridline-color: transparent;\n"
         "    border-radius: 8px;\n"
         "    font-size: 14px;\n"
         "    color: #222;\n"
+            "border: none;\n"
+           " outline: none;\n"
         "}\n"
         "\n"
         "QHeaderView::section {\n"
-        "    background: #EBEC8D;\n"
+        "    background: #EDEDED;\n"
+        "    gridline-color: transparent;\n"
+
         "    padding: 6px 4px;\n"
         "    font-weight: bold;\n"
-        "    border: 1px solid #b4b4b4;\n"
+        "    border: none;\n"
         "}\n"
         "\n"
         "QTableWidget::item {\n"
@@ -155,6 +159,10 @@ class Ui_Form(object):
         "    border: 1px solid #487c7e;\n"
         "}\n"
         "\n"
+        "QTableCornerButton::section {\n"
+    "background: #EDEDED;\n"
+    "border: none;\n"
+"}\n"
         "QToolTip {\n"
 "    background-color: #fdfdfd;\n"
 "    color: #333333;\n"
@@ -351,7 +359,7 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.verticalLayout_2)
         self.verticalLayout.setStretch(1, 100)
         self.horizontalLayout_3.addLayout(self.verticalLayout)
-
+        self.tableWidgetInventario.setCornerButtonEnabled(False)
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 

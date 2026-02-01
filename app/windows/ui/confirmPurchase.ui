@@ -28,7 +28,7 @@ QLabel {
 }
 
 #menu {
-    background: #EAEB8C;
+    background: #ededed;
     border-bottom: 1.5px solid #bdbdbd;
 }
 
@@ -105,15 +105,15 @@ QPushButton#btnBack:hover {
 
 
 QTableWidget {
-    background: #EAEB8C;
-    gridline-color: #bcbcbc;
+    background: #ededed;
+    gridline-color: transparent;
     border-radius: 8px;
     font-size: 14px;
     color: #222;
 }
 
 QHeaderView::section {
-    background: #EBEC8D;
+    background: #EDEDED;
     padding: 6px 4px;
     font-weight: bold;
     border: 1px solid #b4b4b4;

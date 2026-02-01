@@ -335,7 +335,7 @@ QPushButton:pressed {
             <property name="font">
              <font>
               <family>Arial</family>
-              <pointsize>1</pointsize>
+              <pointsize>-1</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
@@ -386,6 +386,22 @@ QPushButton:pressed {
           </property>
           <property name="text">
            <string>Iniciar sesión</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonCreateUser">
+          <property name="minimumSize">
+           <size>
+            <width>250</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="text">
+           <string>Crear Usuario</string>
           </property>
          </widget>
         </item>

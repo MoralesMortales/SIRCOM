@@ -49,7 +49,8 @@ class PurchaseView(QWidget, Ui_Form):
         
         self.tableWidget.setStyleSheet("""
             QTableWidget {
-                background-color: #EBEC8D;
+                background-color: #EDEDED;
+                gridline-color: transparent;
                 border: none;
                 font-size: 20px;
                 font-weight: bold;

@@ -30,7 +30,7 @@ class InventoryView(QWidget, Ui_Form):
         #menu QWidget {
         background: #7f5b5f;
         }""")
-        
+
         self.labelAdminUsers.mousePressEvent = self.openUsersView
 
         self.menuItemHistorial.setCursor(QtCore.Qt.PointingHandCursor)
