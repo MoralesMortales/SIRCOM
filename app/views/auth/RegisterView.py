@@ -393,7 +393,41 @@ class RegisterView(QtWidgets.QWidget, Ui_Form):
             return
 
         if newUser(cedula, fisrtName.capitalize(), lastName.capitalize(), correo, password):
-            QtWidgets.QMessageBox.warning(self, "Exito", "Usuario creado")
-            self.comeBack()
+            # Preguntar si quiere registrar otro usuario
+            reply = QtWidgets.QMessageBox.question(
+                self, 
+                "Registro exitoso", 
+                "✅ Usuario creado exitosamente\n\n¿Desea registrar otro usuario?",
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                QtWidgets.QMessageBox.Yes
+            )
+            
+            if reply == QtWidgets.QMessageBox.Yes:
+                # Limpiar los campos para nuevo registro
+                self.clear_form()
+            else:
+                # Volver al login
+                self.comeBack()
         else:
-            QtWidgets.QMessageBox.warning(self, "Error", "Usuario no creado")
+            QtWidgets.QMessageBox.warning(self, "Error", "Usuario no creado, la cédula ya está registrada")
+
+    def clear_form(self):
+        """Limpiar todos los campos del formulario"""
+        # Limpiar campos de texto
+        self.lineEditCedula.clear()
+        self.lineEditNombre.clear()
+        self.lineEditApellido.clear()
+        self.lineEditCorreo.clear()
+        self.lineEditPass.clear()
+        self.lineEdit_3.clear()
+        
+        # Actualizar etiquetas de obligatorio
+        self.update_cedula_label("")
+        self.update_nombre_label("")
+        self.update_apellido_label("")
+        self.update_correo_label("")
+        self.update_pass_label("")
+        self.update_confirm_label("")
+        
+        # Enfocar el primer campo
+        self.lineEditCedula.setFocus()

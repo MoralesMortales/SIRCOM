@@ -56,7 +56,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "QTableWidget {\n"
-"    background-color: #ededed;\n"
+"    background-color: #eee;\n"
 "    alternate-background-color: #FFFFF0; \n"
 "    gridline-color: #7f5b5f;          \n"
 "    border: 1px solid #7f5b5f;\n"
@@ -66,7 +66,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "QHeaderView::section {\n"
-"    background-color: #ededed;       \n"
+"    background-color: #eee;       \n"
 "    color: #000000;\n"
 "    font-weight: bold;\n"
 "    padding: 4px;\n"
@@ -249,7 +249,7 @@ class Ui_Form(object):
         self.tableProducto = QtWidgets.QTableWidget(self.panelRegistro)
         self.tableProducto.setMinimumSize(QtCore.QSize(0, 350))
         self.tableProducto.setObjectName("tableProducto")
-        self.tableProducto.setColumnCount(10)
+        self.tableProducto.setColumnCount(9)
         self.tableProducto.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableProducto.setHorizontalHeaderItem(0, item)
@@ -269,8 +269,6 @@ class Ui_Form(object):
         self.tableProducto.setHorizontalHeaderItem(7, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableProducto.setHorizontalHeaderItem(8, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableProducto.setHorizontalHeaderItem(9, item)
         self.tableProducto.horizontalHeader().setDefaultSectionSize(165)
         self.tableProducto.horizontalHeader().setMinimumSectionSize(50)
         self.tableProducto.horizontalHeader().setStretchLastSection(True)
@@ -340,9 +338,9 @@ class Ui_Form(object):
         item = self.tableProducto.horizontalHeaderItem(1)
         item.setText(_translate("Form", "Producto"))
         item = self.tableProducto.horizontalHeaderItem(2)
-        item.setText(_translate("Form", "Proveedor"))
-        item = self.tableProducto.horizontalHeaderItem(3)
         item.setText(_translate("Form", "RIF"))
+        item = self.tableProducto.horizontalHeaderItem(3)
+        item.setText(_translate("Form", "Proveedor"))
         item = self.tableProducto.horizontalHeaderItem(4)
         item.setText(_translate("Form", "Cantidad"))
         item = self.tableProducto.horizontalHeaderItem(5)
@@ -350,10 +348,8 @@ class Ui_Form(object):
         item = self.tableProducto.horizontalHeaderItem(6)
         item.setText(_translate("Form", "IVA"))
         item = self.tableProducto.horizontalHeaderItem(7)
-        item.setText(_translate("Form", "Descuento"))
-        item = self.tableProducto.horizontalHeaderItem(8)
         item.setText(_translate("Form", "Subtotal"))
-        item = self.tableProducto.horizontalHeaderItem(9)
+        item = self.tableProducto.horizontalHeaderItem(8)
         item.setText(_translate("Form", "Total"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("Form", "Total"))

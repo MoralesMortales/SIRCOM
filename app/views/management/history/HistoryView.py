@@ -104,7 +104,7 @@ class HistoryView(QWidget, Ui_Form):
             fecha_str = row[2]
             total = row[3]
             total = str(total)
-            total += " $"
+            total += " Bs"
             dt_obj = datetime.strptime(fecha_str, '%Y-%m-%d %H:%M:%S')
             
             dt_local = dt_obj - timedelta(hours=4)

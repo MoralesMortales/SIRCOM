@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1385</width>
+    <height>963</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#lineFake, #lineEditTelefonoEmpresa_2{
+    background: white;
+    border-radius: 4px;
+    padding: 6px;
+    border: 1px solid #c4c4c4;
+    font-size: 20px;
+background-color:transparent;
+border:none;
+}
+#comboBox{
+    border-radius: 4px;
+    padding: 6px;
+    border: 1px solid #c4c4c4;
+    font-size: 20px;
+border:none;
+}
+#mainWindow {
+	font-family: Arial;
+}
+
+QLabel {
+    font-size: 18px;
+    color: #222;
+}
+
+#labelAdd{
+	font-size:24px;
+}
+
+#menu {
+    background: #eee;
+    border-bottom: 1.5px solid #bdbdbd;
+}
+
+#menu QLabel {
+    font-size: 16px;
+    color: #222;
+}
+
+#menu QWidget:hover {
+    background: #e0e0e0;
+}
+
+#menu QWidget[active=&quot;true&quot;] {
+    background: #ffffff;
+    border-bottom: 3px solid #487c7e;
+}
+
+#menu QWidget[active=&quot;true&quot;] QLabel {
+    font-weight: bold;
+}
+
+#menu QWidget {
+    border-right: 1px solid #bdbdbd;
+    border-left: 1px solid #bdbdbd;
+
+}
+
+QLineEdit {
+    background: white;
+    border-radius: 4px;
+    padding: 6px;
+    border: 1px solid #c4c4c4;
+    font-size: 20px;
+}
+
+QLineEdit:focus {
+    border: 1px solid #487c7e;
+}
+
+QLabel#labelTituloProveedores{
+    font-size: 36px;
+    font-weight: 600;
+    color: #222;
+}
+
+QPushButton#btnAdd {
+    background: transparent;
+    font-size: 36px;
+    color: #222;
+    border: none;
+}
+QPushButton#btnAdd:hover {
+    color: #444;
+}
+
+QToolButton {
+    background: transparent;
+    border: none;
+}
+QToolButton:hover {
+    background: #dcdcdc;
+    border-radius: 4px;
+}
+
+QPushButton#btnBack {
+    background: transparent;
+    border: none;
+    font-size: 36px;
+    color: #222;
+}
+QPushButton#btnBack:hover {
+    color: #555;
+}
+
+
+QTableWidget {
+    background: #eee;
+    gridline-color: transparent;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #222;
+}
+
+QHeaderView::section {
+    background: #eee;
+    padding: 6px 4px;
+    font-weight: bold;
+    border: 1px solid #b4b4b4;
+}
+
+QTableWidget::item {
+    padding: 6px;
+}
+
+QTableWidget::item:selected {
+    background: #c6d3d6;
+    color: #000;
+}
+
+QScrollBar:vertical,
+QScrollBar:horizontal {
+    background: #dcdcdc;
+    border-radius: 4px;
+}
+
+QScrollBar::handle {
+    background: #aaaaaa;
+    border-radius: 4px;
+}
+QScrollBar::handle:hover {
+    background: #888888;
+}
+
+#tablaContenedor {
+    background: #7835ff;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+QPushButton#btnAddProducto,
+QPushButton#btnRemoveProducto {
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+QPushButton#btnAddProducto:hover,
+QPushButton#btnRemoveProducto:hover {
+    color: #487c7e;
+}
+
+QPushButton#btnCancelar {
+    background: #e7b0b0;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 26px;
+    font-size: 16px;
+}
+
+QPushButton#btnCancelar:hover {
+    background: #d59a9a;
+}
+
+QPushButton#btnGuardar {
+    background: #b9e3a6;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 26px;
+    font-size: 16px;
+}
+
+QPushButton#btnGuardar:hover {
+    background: #a3d68c;
+}
+
+#panelRegistro {
+    background: #e0e0e0;
+    border-radius: 8px;
+	border: 1.5px solid #b8b8b8;
+    padding: 16px;
+}
+</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,10,1,1">
+       <property name="leftMargin">
+        <number>50</number>
+       </property>
+       <property name="topMargin">
+        <number>25</number>
+       </property>
+       <property name="rightMargin">
+        <number>50</number>
+       </property>
+       <property name="bottomMargin">
+        <number>25</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="3">
+         <item>
+          <widget class="QLabel" name="labelTituloProveedores">
+           <property name="text">
+            <string>Registro de proveedores</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QWidget" name="panelRegistro" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>45</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_4" stretch="5,5,5,75">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>10</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelDatos">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>-1</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Datos de la empresa</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::MarkdownText</enum>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>10</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <property name="spacing">
+               <number>40</number>
+              </property>
+              <property name="leftMargin">
+               <number>60</number>
+              </property>
+              <property name="rightMargin">
+               <number>60</number>
+              </property>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0">
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_7" stretch="1,0,0,1,0,0,1,0,0,1">
+                  <property name="spacing">
+                   <number>6</number>
+                  </property>
+                  <item>
+                   <spacer name="verticalSpacer_9">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_7">
+                    <property name="text">
+                     <string>RIF</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_6">
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QComboBox" name="comboBox">
+                      <property name="layoutDirection">
+                       <enum>Qt::RightToLeft</enum>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true"> text-align: center;
+color:black;
+background-color:white;
+</string>
+                      </property>
+                      <property name="insertPolicy">
+                       <enum>QComboBox::InsertAtBottom</enum>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>V</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>J</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>G</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="lineEditRIFEmpresa">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>50</height>
+                       </size>
+                      </property>
+                      <property name="placeholderText">
+                       <string>Correo</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_10">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_11">
+                    <property name="text">
+                     <string>Nombre de la Empresa</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEditNameEmpresa">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="placeholderText">
+                     <string>Teléfono</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_12">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_12">
+                    <property name="text">
+                     <string>Dirección de la Empresa</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEditDireccionEmpresa">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="placeholderText">
+                     <string>Teléfono</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_17">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_5" stretch="1,0,1,1,0,0,1,0,0,1">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <item>
+                 <spacer name="verticalSpacer_5">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_5">
+                  <property name="text">
+                   <string>Teléfono</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEditTelefonoEmpresa">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Correo</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_8">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_4">
+                  <property name="text">
+                   <string>Correo</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEditCorreoEmpresa">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Teléfono</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_7">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEditTelefonoEmpresa_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="placeholderText">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_11">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <property name="spacing">
+          <number>60</number>
+         </property>
+         <property name="leftMargin">
+          <number>250</number>
+         </property>
+         <property name="rightMargin">
+          <number>250</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="btnCancelar">
+           <property name="text">
+            <string>Cancelar</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnGuardar">
+           <property name="text">
+            <string>Guardar</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -8,7 +8,81 @@ sys.path.append(str(project_root))
 import sqlite3
 
 from app.database.connect import connectDB
+def updatePurchaseStatus(purchase_id, status):
+    """Actualiza el estado de una compra"""
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                "UPDATE compra SET estado = ? WHERE idCompra = ?",
+                (status, purchase_id)
+            )
+            connection.commit()
+            return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            print(f"Error updating purchase status: {e}")
+            return False
+        finally:
+            connection.close()
+    return False
 
+def updateProductStock(product_code, new_stock):
+    """Actualiza el stock de un producto"""
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(
+                "UPDATE producto SET stock = ? WHERE codigo = ?",
+                (new_stock, product_code)
+            )
+            connection.commit()
+            return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            print(f"Error updating product stock: {e}")
+            return False
+        finally:
+            connection.close()
+    return False
+def updateProduct(nombre, precioUnitario, stock, stockMinimo, descripcion, rifProveedor, codigo, descuentoDesde=0, descuento=0):
+    """Actualiza un producto existente en la base de datos"""
+    connection = connectDB()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            
+            # Verificar si el producto existe
+            cursor.execute(
+                "SELECT codigo FROM producto WHERE codigo = ? AND rifProveedor = ?",
+                (codigo, rifProveedor)
+            )
+            if not cursor.fetchone():
+                return False  # Producto no existe
+            
+            # Actualizar el producto - ORDEN CORREGIDO
+            cursor.execute("""
+                UPDATE producto 
+                SET nombre = ?, 
+                    precioUnitario = ?, 
+                    stock = ?, 
+                    stockMinimo = ?, 
+                    descripcion = ?,
+                    descuentoDesde = ?,
+                    descuento = ?
+                WHERE codigo = ? AND rifProveedor = ?
+            """, (nombre, precioUnitario, stock, stockMinimo, descripcion, 
+                  descuentoDesde, descuento, codigo, rifProveedor))
+            
+            connection.commit()
+            return cursor.rowcount > 0
+            
+        except sqlite3.Error as e:
+            print(f"Error updating product: {e}")
+            return False
+        finally:
+            connection.close()
+    return False
 def updateProvider(rif, nombre, direccion, telefono, correo):
     connection = connectDB()
     if connection:
@@ -26,28 +100,6 @@ def updateProvider(rif, nombre, direccion, telefono, correo):
             return True
         except sqlite3.Error as e:
             print(f"Error updating provider: {e}")
-            return False
-        finally:
-            connection.close()
-    return False
-
-def updateProduct(codigo, nombre, precio, stock, minDes, desc, stockMin, estado):
-    connection = connectDB()
-    if connection:
-        try:
-            cursor = connection.cursor()
-            cursor.execute(
-                """
-                UPDATE producto 
-                SET nombre = ?, precioUnitario = ?, stock = ?, descuentoDesde = ?, descuento = ?, stockMinimo = ?, estado = ?
-                WHERE codigo = ?
-                """,
-                (nombre, precio, stock, minDes, desc, stockMin, estado, codigo),
-            )
-            connection.commit()
-            return True
-        except sqlite3.Error as e:
-            print(f"Error updating product: {e}")
             return False
         finally:
             connection.close()

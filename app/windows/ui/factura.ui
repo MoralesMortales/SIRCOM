@@ -55,7 +55,7 @@ QLabel {
 }
 
 QTableWidget {
-    background-color: #ededed;
+    background-color: #eee;
     alternate-background-color: #FFFFF0; 
     gridline-color: #7f5b5f;          
     border: 1px solid #7f5b5f;
@@ -65,7 +65,7 @@ QTableWidget {
 }
 
 QHeaderView::section {
-    background-color: #ededed;       
+    background-color: #eee;       
     color: #000000;
     font-weight: bold;
     padding: 4px;

@@ -18,16 +18,16 @@ def create_tables():
         sql_statements = [
       
           """CREATE TABLE IF NOT EXISTS proveedor (
-          rif INTEGER PRIMARY KEY,
+          rif TEXT PRIMARY KEY,
           nombreEmpresa TEXT,
           direccionEmpresa TEXT,
-          telefono INTEGER,
+          telefono TEXT,
           correo TEXT,
-          estado INTEGER DEFAULT 1
+          estado TEXT DEFAULT 1
         );""",
 
           """CREATE TABLE IF NOT EXISTS usuario (
-          cedula INTEGER PRIMARY KEY,
+          cedula TEXT PRIMARY KEY,
           primerNombre TEXT,
           primerApellido TEXT,
           correo TEXT UNIQUE,
@@ -36,17 +36,18 @@ def create_tables():
         );""",
 
           """CREATE TABLE IF NOT EXISTS producto (
-          codigo INTEGER PRIMARY KEY AUTOINCREMENT,
+          codigo TEXT PRIMARY KEY,
           nombre TEXT,
+          descripcion TEXT,
           precioUnitario FLOAT,
           
-          descuentoDesde INTEGER,
-          descuento INTEGER,
-          stockMinimo INTEGER,
-          
-          stock INTEGER,
-          rifProveedor INTEGER,
-          estado INTEGER DEFAULT 1,
+          descuentoDesde TEXT,
+          descuento TEXT,
+          stockMinimo TEXT,
+          compraEstado TEXT,
+          stock TEXT,
+          rifProveedor TEXT,
+          estado TEXT DEFAULT 1,
           FOREIGN KEY (rifProveedor) REFERENCES proveedor (rif)
         );""",
 
@@ -54,25 +55,27 @@ def create_tables():
           idCompra INTEGER PRIMARY KEY AUTOINCREMENT,
           fechaCompra DATETIME DEFAULT CURRENT_TIMESTAMP,
           totalCompra FLOAT,
-          nombreUsuario TEXT
+          nombreUsuario TEXT,
+          estado TEXT DEFAULT 'En Curso'
         );""",
 
           """CREATE TABLE IF NOT EXISTS detalleCompra (
           idDetalleProducto INTEGER PRIMARY KEY AUTOINCREMENT,
           idCompra INTEGER,
-          codigoProducto INTEGER,
+          codigoProducto TEXT,
           cantidad FLOAT,
           precioUnitario FLOAT,
           subTotal FLOAT,
+          tasaBCV FLOAT,
           FOREIGN KEY (idCompra) REFERENCES compra (idCompra),
           FOREIGN KEY (codigoProducto) REFERENCES producto (codigo)
         );""",
         
           """CREATE TABLE IF NOT EXISTS productosInventario (
           codigo INTEGER PRIMARY KEY AUTOINCREMENT,
-          codigoProducto INTEGER,
-          cantidad INTEGER,
-          stock_minimo INTEGER,
+          codigoProducto TEXT,
+          cantidad TEXT,
+          stock_minimo TEXT,
           FOREIGN KEY (codigoProducto) REFERENCES producto (codigo)
         );""",
         

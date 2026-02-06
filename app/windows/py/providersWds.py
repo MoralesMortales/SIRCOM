@@ -101,20 +101,25 @@ class Ui_Form(object):
 "\n"
 "\n"
 "QTableWidget {\n"
-"    background: #ededed;\n"
+"    background: #eee;\n"
 "    gridline-color: transparent;\n"
 "    border-radius: 8px;\n"
 "    font-size: 14px;\n"
 "    color: #222;\n"
+"    border: none;\n"
+"    outline: none;\n"
 "}\n"
 "\n"
 "QHeaderView::section {\n"
-"    background: #EDEDED;\n"
+"    background: #eee;\n"
 "    gridline-color: transparent;\n"
-
-"    padding: 6px 4px;\n"
-"    font-weight: bold;\n"
-"    border: 1px solid #b4b4b4;\n"
+"    border: none;\n"
+"    padding: 8px;\n"
+"}\n"
+"\n"
+"QTableCornerButton::section {\n"
+"    background: #eee;\n"
+"    border: none;\n"
 "}\n"
 "\n"
 "QTableWidget::item {\n"
@@ -341,7 +346,7 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.labelMenuProveedores.setText(_translate("Form", "Proveedores"))
         self.labelMenuInventario.setText(_translate("Form", "Inventario"))
-        self.labelMenuRecursos.setText(_translate("Form", "Comprar recursos"))
+        self.labelMenuRecursos.setText(_translate("Form", "Orden de Compra"))
         self.labelMenuHistorial.setText(_translate("Form", "Historial"))
         self.labelTituloProveedores.setText(_translate("Form", "Proveedores"))
         self.labelAdd.setText(_translate("Form", "Añadir"))

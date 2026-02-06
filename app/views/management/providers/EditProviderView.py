@@ -1,10 +1,9 @@
+# app/views/management/providers/EditProviderView.py
 from PyQt5 import QtWidgets, QtCore
-from app.windows.py.editproviderWds import Ui_Form
-from app.views.management.providers.AddProviderView import AddProviderView
-from app.database.auth.get import getProviderData, getProviderProducts
-from app.database.auth.update import updateProduct, updateProvider
+from app.windows.py.providersRegistrationWds import Ui_Form 
 import re
-from app.functions.tools.intFnt import NumericDelegate
+from app.database.auth.update import updateProvider
+from app.database.auth.get import getProviderData
 
 EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
@@ -15,249 +14,232 @@ class EditProviderView(QtWidgets.QWidget, Ui_Form):
         self.setupUi(self)
         self.setWindowTitle("Editar Proveedor")
         
-        self.rifProvider = 0
-        self.provider = None
+        # Variables para datos del proveedor
+        self.original_rif = ""
+        self.provider_name = ""
         
-        # Estilos de tabla
-        self.tableProducto.verticalHeader().setDefaultSectionSize(40)
-        self.tableProducto.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        # Configuración inicial
+        self.lineEditTelefonoEmpresa.setText("0")
+        self.lineEditTelefonoEmpresa_2.setEnabled(False)
+        self.lineEditTelefonoEmpresa.setInputMask("9999-9999999;_")
+        self.lineEditTelefonoEmpresa.setPlaceholderText("ej: 0412-1234567")
         
-        # Configuración de Columnas: ID(oculto) + 6 datos + Borrar = 8 columnas
-        self.tableProducto.setColumnCount(8)
-        self.setupHeaders()
-
-        # Mascaras de entrada
-        self.lineEditRIFEmpresa.setInputMask("J-99999999-9")
-        self.lineEditTelefonoEmpresa.setInputMask("\\0999-9999-999")
-
-        # Botones
-        self.addBtn()
-        self.btnAddProducto.clicked.connect(self.AddRow)
+        # DESHABILITAR y estilizar el campo RIF
+        self.lineEditRIFEmpresa.setEnabled(False)
+        self.lineEditRIFEmpresa.setStyleSheet("""
+            QLineEdit:disabled {
+                background-color: #f5f5f5;
+                color: #666;
+                border: 1px solid #ddd;
+            }
+        """)
+        
+        self.comboBox.setEnabled(False)
+        self.comboBox.setStyleSheet("""
+            QComboBox:disabled {
+                background-color: #f5f5f5;
+                color: #666;
+                border: 1px solid #ddd;
+            }
+        """)
+        
+        # Cambiar texto de botones
+        self.btnGuardar.setText("Actualizar")
+        
+        # Crear botón adicional para gestionar productos
+        self.btnGestionarProductos = QtWidgets.QPushButton("Gestionar Productos")
+        self.btnGestionarProductos.setObjectName("btnGestionarProductos")
+        self.btnGestionarProductos.setStyleSheet("""
+            QPushButton#btnGestionarProductos {
+                font-size: 16px;
+                font-weight: bold;
+                padding: 12px 40px;
+                background: #6c757d;
+                color: white;
+                border: none;
+                border-radius: 6px;
+            }
+            QPushButton#btnGestionarProductos:hover {
+                background: #5a6268;
+            }
+        """)
+        
+        # Insertar el botón en el layout
+        self.horizontalLayout_5.insertWidget(1, self.btnGestionarProductos)
+        
+        # Conexiones
         self.btnCancelar.clicked.connect(self.cancelOperation)
         self.btnGuardar.clicked.connect(self.validateInputs)
-        
+        self.btnGestionarProductos.clicked.connect(self.manageProducts)
+
     def isValidEmail(self, email):
-        if not email:
-            return False
-            
-        if re.match(EMAIL_REGEX, email):
-            return True
+        return bool(re.match(EMAIL_REGEX, email))
+   
+    def updateRIFPlaceholder(self, tipo_rif):
+        """Actualiza la máscara según el tipo de RIF"""
+        self.lineEditRIFEmpresa.clear()
+        if tipo_rif == "J":
+            self.lineEditRIFEmpresa.setInputMask("99999999-9;_")
+        else:  # V o G
+            self.lineEditRIFEmpresa.setInputMask("99999999;_")
+    
+    def openWindow(self, rif):
+        """Abre la ventana con los datos del proveedor para editar"""
+        self.original_rif = rif  # Guardar el RIF original
+        
+        # Obtener datos del proveedor de la base de datos
+        provider_data = getProviderData(rif)
+        
+        if not provider_data:
+            QtWidgets.QMessageBox.warning(self, "Error", "No se encontraron datos del proveedor.")
+            self.cancelOperation()
+            return
+        
+        # provider_data contiene: (nombreEmpresa, direccionEmpresa, telefono, correo)
+        nombre, direccion, telefono, correo = provider_data
+        self.provider_name = nombre  # Guardar nombre para uso posterior
+        
+        # Extraer tipo de RIF y número
+        if rif[0] in ['J', 'V', 'G']:
+            tipo_rif = rif[0]
+            numero_rif = rif[2:] if len(rif) > 2 else ""  # Quitar "J-" o "V-" o "G-"
         else:
-            return False
+            tipo_rif = "J"
+            numero_rif = rif
         
-    def openWindow(self, rifProvider):
-        self.rifProvider = rifProvider
-        # El RIF viene sin la 'J' y guiones de la tabla principal
-        self.provider = getProviderData(self.rifProvider)
+        # Configurar comboBox según tipo de RIF
+        self.comboBox.setCurrentText(tipo_rif)
+        self.updateRIFPlaceholder(tipo_rif)
         
-        if self.provider:
-            self.setTextOnInputs(self.provider)
-            self.loadProviderProducts()
-            self.showMaximized()
+        # Rellenar campos con los datos del proveedor
+        self.lineEditRIFEmpresa.setText(numero_rif)
+        self.lineEditNameEmpresa.setText(nombre)
+        self.lineEditDireccionEmpresa.setText(direccion)
+        
+        # Formatear teléfono (asegurar que tenga el formato correcto)
+        telefono = str(telefono)
+        if telefono:
+            if len(telefono) >= 11:
+                telefono_formateado = f"{telefono[:4]}-{telefono[4:]}"
+            else:
+                telefono_formateado = telefono
+            self.lineEditTelefonoEmpresa.setText(telefono_formateado)
+        
+        self.lineEditCorreoEmpresa.setText(correo)
+        
+        # Mostrar ventana
+        self.showMaximized()
+    
+    def manageProducts(self):
+        """Abre la ventana para gestionar productos del proveedor"""
+        from app.views.management.providers.ManageProductsView import ManageProductsView
+        
+        # Obtener datos actuales del formulario
+        nombre = self.lineEditNameEmpresa.text().strip().capitalize()
+        direccion = self.lineEditDireccionEmpresa.text().strip().capitalize()
+        email = self.lineEditCorreoEmpresa.text().strip()
+        telefono = self.lineEditTelefonoEmpresa.text().replace('-', '').replace('_', '').strip()
+        
+        # Validar datos antes de continuar
+        if not nombre or not direccion or not email or len(telefono) < 11:
+            QtWidgets.QMessageBox.warning(self, "Error", 
+                "Complete todos los campos correctamente antes de gestionar productos.")
+            return
+        
+        # Crear y abrir ventana de gestión de productos
+        self.manageProductsView = ManageProductsView()
+        self.manageProductsView.openWindow(
+            nombre, 
+            direccion, 
+            self.original_rif, 
+            email, 
+            telefono
+        )
+        self.close()
+    
+    def validateInputs(self):
+        # Obtener y limpiar datos
+        NameBusiness = self.lineEditNameEmpresa.text().strip().capitalize()
+        UbicationBusiness = self.lineEditDireccionEmpresa.text().strip().capitalize()
+        BusinessEmail = self.lineEditCorreoEmpresa.text().strip()
+        
+        # Limpieza de datos
+        raw_phone = self.lineEditTelefonoEmpresa.text().replace('-', '').replace('_', '').strip()
+        
+        # El RIF no se modifica, usar el original
+        BusinessFullRif = self.original_rif
+        
+        # --- VALIDACIONES ---
+        
+        # 1. Validación de Nombre y Ubicación
+        if not NameBusiness or not UbicationBusiness:
+            QtWidgets.QMessageBox.warning(self, "Error", "Nombre y ubicación son obligatorios")
+            return
+        
+        # 2. Validación de Email
+        if not self.isValidEmail(BusinessEmail):
+            QtWidgets.QMessageBox.warning(self, "Error", "El correo electrónico no es válido")
+            return
+        
+        # 3. Validación de Teléfono
+        if len(raw_phone) < 11:
+            QtWidgets.QMessageBox.warning(self, "Error", "Número de teléfono incompleto (ej: 04241234567)")
+            return
+        
+        if raw_phone[0] != '0':
+            QtWidgets.QMessageBox.warning(self, "Error", "Número de teléfono inválido (debe comenzar con 0)")
+            return
+        
+        # Actualizar el proveedor en la base de datos
+        self.updateProvider(NameBusiness, UbicationBusiness, BusinessFullRif, BusinessEmail, raw_phone)
+    
+    def updateProvider(self, NameBusiness, UbicationBusiness, BusinessFullRif, BusinessEmail, raw_phone):
+        """Actualiza el proveedor en la base de datos"""
+        try:
+            # Limpiar RIF para almacenar (usar el original)
+            rif_clean = BusinessFullRif.replace('-', '').replace(' ', '').replace('J', '')
             
-    def setTextOnInputs(self, provider):
-        # provider: (Nombre, Direccion, Telefono, Correo)
-        self.lineEditNameEmpresa.setText(str(provider[0]))
-        self.lineEditDireccionEmpresa.setText(str(provider[1]))
-        self.lineEditTelefonoEmpresa.setText(str(provider[2]))    
-        self.lineEditCorreoEmpresa.setText(str(provider[3]))
-        self.lineEditRIFEmpresa.setText(str(self.rifProvider))
-        self.lineEditRIFEmpresa.setReadOnly(True)
-        
+            # Llamar a la función de actualización
+            success = updateProvider(
+                rif_clean,  # RIF original (no cambia)
+                NameBusiness,
+                UbicationBusiness,
+                raw_phone,
+                BusinessEmail
+            )
+            
+            if success:
+                QtWidgets.QMessageBox.information(
+                    self,
+                    "Proveedor Actualizado",
+                    f"Proveedor '{NameBusiness}' actualizado exitosamente.\n\n"
+                    f"¿Desea gestionar los productos de este proveedor?",
+                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                    QtWidgets.QMessageBox.Yes
+                )
+                
+                # Si el usuario quiere gestionar productos
+                if QtWidgets.QMessageBox.Yes:
+                    self.manageProducts()
+                else:
+                    self.cancelOperation()
+            else:
+                QtWidgets.QMessageBox.warning(
+                    self,
+                    "Error",
+                    "No se pudo actualizar el proveedor."
+                )
+                
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Error",
+                f"Error al actualizar el proveedor:\n{str(e)}"
+            )
+    
     def cancelOperation(self):
+        """Cancela la operación y regresa a la vista anterior"""
         from app.views.management.providers.ProvidersView import ProvidersView 
         self.ProviderView = ProvidersView()
         self.ProviderView.showMaximized()
         self.close()
-            
-    def validateInputs(self):
-        
-        NameBusiness = self.lineEditNameEmpresa.text().strip().capitalize()
-        UbicationBusiness = self.lineEditDireccionEmpresa.text().strip().capitalize()
-        BusinessEmail = self.lineEditCorreoEmpresa.text().strip()
-        BusinessPhone = self.lineEditTelefonoEmpresa.text().strip() 
-        BusinessRif = self.lineEditRIFEmpresa.text().strip()
-        BusinessRif_v2 = BusinessRif.replace('-', '').replace(' ', '').replace('J', '')
-        
-        if not NameBusiness:
-            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese el nombre de la empresa")
-            self.lineEditNameEmpresa.setFocus()
-            return
-        
-        if not UbicationBusiness:
-            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese la ubicacion de la empresa")
-            self.lineEditDireccionEmpresa.setFocus()
-            return
-        
-        if not BusinessEmail:
-            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese el correo de la empresa")
-            self.lineEditCorreoEmpresa.setFocus()
-            return
-        
-        if not self.isValidEmail(BusinessEmail):
-            QtWidgets.QMessageBox.warning(self, "Error", "El correo no es válido")
-            self.lineEditCorreoEmpresa.setFocus()
-            return
-        
-        if not BusinessPhone:
-            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese un numero de telefono de la empresa")
-            self.lineEditTelefonoEmpresa.setFocus()
-            return
-        
-        if not BusinessRif:
-            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese el RIF de la empresa")
-            self.lineEditRIFEmpresa.setFocus()
-            return
-        
-        if len(BusinessRif_v2) != 9:
-            QtWidgets.QMessageBox.warning(self, "Error", "Por favor ingrese un RIF valido")
-            self.lineEditRIFEmpresa.setFocus()
-            return
-        
-        products = self.getProductData()
-        if products is not None:
-            if updateProvider(BusinessRif_v2, NameBusiness, UbicationBusiness, BusinessPhone, BusinessEmail):
-                for p in products:
-                    if p['id']:
-                        # Asegúrate de que updateProduct acepte estos nuevos 7 parámetros
-                        updateProduct(p['id'], p['nombre'], p['precio'], p['stock'], p['minDesc'], p['desc'], p['stockMin'], p['update_param'])
-                    else: 
-                        from app.database.auth.insertNew import newProduct
-                        newProduct(p['nombre'], p['precio'], p['stock'], BusinessRif_v2, p['minDesc'], p['desc'], p['stockMin'])
-
-                QtWidgets.QMessageBox.information(self, "Éxito", "Datos actualizados correctamente.")
-                self.cancelOperation() 
-
-    def addBtn(self):
-        self.btnAddProducto = QtWidgets.QPushButton(self.panelRegistro)
-        self.btnAddProducto.setText("Agregar Producto (+)")
-        self.verticalLayout_6.addWidget(self.btnAddProducto)
-        self.btnAddProducto.setStyleSheet("font-weight: bold; font-size: 15px; background: transparent; border:none;")
-              
-    def setupHeaders(self):
-        headers = ["ID", "Producto", "Stock", "Precio", "Cant. Min Desc", "Descuento", "Stock Min", "Borrar"]
-        self.tableProducto.setHorizontalHeaderLabels(headers)
-        self.tableProducto.setColumnHidden(0, True) # Ocultar ID
-        
-        header = self.tableProducto.horizontalHeader()
-        header.setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-        
-        # Aplicar Delegados Numéricos (ajustando índices por la columna ID oculta)
-        self.tableProducto.setItemDelegateForColumn(2, NumericDelegate(self, is_int=True))   # Stock
-        self.tableProducto.setItemDelegateForColumn(3, NumericDelegate(self, is_int=False))  # Precio
-        self.tableProducto.setItemDelegateForColumn(4, NumericDelegate(self, is_int=True))   # Cant Min Desc
-        self.tableProducto.setItemDelegateForColumn(5, NumericDelegate(self, is_int=False, min_val=0, max_val=99)) # %
-        self.tableProducto.setItemDelegateForColumn(6, NumericDelegate(self, is_int=True))   # Stock Min
-        
-    def AddRow(self):
-        self.AddDataRow(min_d=0, desc=0, s_min=0)
-        
-    def reloadRemoveBtns(self):
-        for row in range(self.tableProducto.rowCount()):
-            widget = self.tableProducto.cellWidget(row, 3)
-            if isinstance(widget, QtWidgets.QPushButton):
-                try:
-                    widget.clicked.disconnect()
-                except TypeError:
-                    pass
-                
-                widget.clicked.connect(lambda _, r=row: self.deleteRow(r))
-  
-    def getProductData(self):
-        product_list = []
-        for row in range(self.tableProducto.rowCount()):
-            try:
-                items = [self.tableProducto.item(row, i) for i in range(7)]
-                if any(it is None or it.text().strip() == "" for it in items[1:]):
-                    raise ValueError(f"Fila {row+1} incompleta")
-
-                cantidad_stock = int(items[2].text())
-                
-                # DETERMINAR EL PARÁMETRO DE UPDATE
-                # Si la cantidad es diferente a 0, enviamos 1, de lo contrario 0
-                parametro_update = 1 if cantidad_stock != 0 else 0
-
-                product_list.append({
-                    "id": items[0].text() if items[0].text() else None,
-                    "nombre": items[1].text().strip(),
-                    "stock": cantidad_stock,
-                    "precio": float(items[3].text()),
-                    "minDesc": int(items[4].text()),
-                    "desc": float(items[5].text()),
-                    "stockMin": int(items[6].text()),
-                    "update_param": parametro_update # Nuevo parámetro
-                })
-            except Exception as e:
-                QtWidgets.QMessageBox.warning(self, "Error", str(e))
-                return None
-        return product_list
-    def loadProviderProducts(self):
-        self.tableProducto.setRowCount(0)
-        products = getProviderProducts(self.rifProvider)
-        
-        if products:
-            for p in products:
-                # p debe traer: (id, nombre, stock, precio, minDesc, desc, stockMin)
-                self.AddDataRow(p[0], p[1], p[2], p[3], p[4], p[5], p[6])
-        else:
-            self.AddRow()
-    
-    def setupTable(self, rifProvider):
-        # 1. Definimos que la tabla tiene 5 columnas (0 a 4)
-        self.tableProducto.setColumnCount(5)
-        
-        # 2. Ponemos los títulos (El primero es vacío porque el ID no se verá)
-        self.tableProducto.setHorizontalHeaderLabels(["", "Producto", "Stock", "Precio", ""])
-        
-        # 3. OCULTAR LA COLUMNA 0 (ID)
-        self.tableProducto.setColumnHidden(0, True)
-        
-        # 4. Ajustar anchos (Opcional, para que se vea mejor)
-        header = self.tableProducto.horizontalHeader()
-        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch) # El nombre se estira
-        self.tableProducto.setColumnWidth(2, 80)  # Stock fijo
-        self.tableProducto.setColumnWidth(3, 100) # Precio fijo
-        self.tableProducto.setColumnWidth(4, 50)  # Botón borrar fijo
-
-        self.tableProducto.setRowCount(0)
-        products = getProviderProducts(rifProvider)
-        
-        if products:
-            for i in products:
-                # i[0]=id, i[1]=nombre, i[2]=stock, i[3]=precio
-                self.AddDataRow(i[0], i[1], i[2], i[3])
-        else:
-            self.AddRow()
-
-    def AddDataRow(self, id_p="", nom="", stock="", precio="", min_d=0, desc=0, s_min=0):
-        row = self.tableProducto.rowCount()
-        self.tableProducto.insertRow(row)
-        
-        values = [id_p, nom, stock, precio, min_d, desc, s_min]
-        for col, val in enumerate(values):
-            item = QtWidgets.QTableWidgetItem(str(val))
-            if col == 0: item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
-            self.tableProducto.setItem(row, col, item)
-
-        btn = QtWidgets.QPushButton("–")
-        btn.setStyleSheet("color: red; font-weight: bold;")
-        btn.clicked.connect(self.deleteRow)
-        self.tableProducto.setCellWidget(row, 7, btn)
-        
-    def deleteRow(self):
-        button = self.sender()
-        index = self.tableProducto.indexAt(button.pos())
-        if index.isValid():
-            row = index.row()
-            id_item = self.tableProducto.item(row, 0)
-            p_id = id_item.text() if id_item else ""
-
-            if p_id:
-                confirm = QtWidgets.QMessageBox.question(self, "Eliminar", "¿Eliminar de la base de datos?", 
-                                                       QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-                if confirm == QtWidgets.QMessageBox.Yes:
-                    from app.database.auth.delete import deleteProduct
-                    if deleteProduct(p_id): self.tableProducto.removeRow(row)
-            else:
-                self.tableProducto.removeRow(row)
-                

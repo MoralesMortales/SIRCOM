@@ -20,6 +20,9 @@ class InventoryView(QWidget, Ui_Form):
         self.load_data()
         self.lineEditBuscar.textChanged.connect(self.filter_products)
 
+        # Reemplazar el label por un botón para administrar usuarios
+        self.setup_admin_users_button()
+
         #tabs
         self.menuItemRecursos.mousePressEvent = lambda event: self.tabLogic("Buy")
         self.menuItemProveedores.mousePressEvent = lambda event: self.tabLogic("Provider")
@@ -31,12 +34,57 @@ class InventoryView(QWidget, Ui_Form):
         background: #7f5b5f;
         }""")
 
-        self.labelAdminUsers.mousePressEvent = self.openUsersView
-
         self.menuItemHistorial.setCursor(QtCore.Qt.PointingHandCursor)
         self.menuItemInventario.setCursor(QtCore.Qt.PointingHandCursor)
         self.menuItemProveedores.setCursor(QtCore.Qt.PointingHandCursor)
         self.menuItemRecursos.setCursor(QtCore.Qt.PointingHandCursor)
+    
+    def setup_admin_users_button(self):
+        """Reemplaza el label por un botón para administrar usuarios"""
+        # Crear el botón
+        admin_btn = QPushButton("Administrar usuarios")
+        admin_btn.setStyleSheet("""
+            QPushButton {
+                color: #666666;
+                background-color: #f5f5f5;
+                border: 1px solid #3a6365;
+                border-radius: 4px;
+                padding: 8px 20px;
+                font-size: 13px;
+                font-weight: bold;
+                margin: 5px;
+            }
+            QPushButton:hover {
+                background-color: #ffebee;
+                border-color: #d32f2f;
+                color: #d32f2f;
+            }
+            QPushButton:pressed {
+                background-color: #2c4a4c;
+            }
+        """)
+        admin_btn.setCursor(Qt.PointingHandCursor)
+        admin_btn.setToolTip("Abrir gestión de usuarios")
+        
+        # Conectar el clic
+        admin_btn.clicked.connect(self.openUsersView)
+        
+        # Reemplazar el labelAdminUsers por el botón en horizontalLayout_9
+        # Primero encontramos la posición del label
+        for i in range(self.horizontalLayout_9.count()):
+            item = self.horizontalLayout_9.itemAt(i)
+            if item and item.widget() == self.labelAdminUsers:
+                # Reemplazar el label por el botón
+                self.horizontalLayout_9.removeWidget(self.labelAdminUsers)
+                self.labelAdminUsers.deleteLater()  # Eliminar el label
+                self.horizontalLayout_9.insertWidget(i, admin_btn)
+                self.admin_users_btn = admin_btn
+                break
+        
+        # Si no encontramos el label, agregamos el botón al final
+        if not hasattr(self, 'admin_users_btn'):
+            self.horizontalLayout_9.addWidget(admin_btn)
+            self.admin_users_btn = admin_btn
         
     def tabLogic(self, tab):
         if tab == "Buy":
@@ -60,7 +108,7 @@ class InventoryView(QWidget, Ui_Form):
             self.HistoryView.showMaximized()
             self.close()
             
-    def openUsersView(self, event):
+    def openUsersView(self):
         from app.views.management. ManageUsers import UsersView
         
         self.UsersView = UsersView()
@@ -81,7 +129,7 @@ class InventoryView(QWidget, Ui_Form):
         self.tableWidgetInventario.setSortingEnabled(True)
         
     def load_data(self):
-        # Obtenemos los datos: (Cod, Prod, Prov, Stock, StockMin)
+        # Obtenemos los datos: (Cod, Prod, Prov, Stock, stockMinimo)
         rows = getInventoryProducts()
         self.tableWidgetInventario.setRowCount(len(rows)) 
         
@@ -114,6 +162,7 @@ class InventoryView(QWidget, Ui_Form):
             # Insertamos los botones de acción en la última columna (índice 5)
             actions_widget = self.create_action_buttons(row_idx, row)
             self.tableWidgetInventario.setCellWidget(row_idx, 5, actions_widget)
+    
     def create_action_buttons(self, row_idx, row_data):
         
         SumIcon = getIcon("Edit.png")
@@ -137,10 +186,8 @@ class InventoryView(QWidget, Ui_Form):
 
         return widget
 
-    
-
     def handle_edit(self, row_data):
-        # row_data: (Codigo, Producto, Proveedor, Stock, StockMin)
+        # row_data: (Codigo, Producto, Proveedor, Stock, stockMinimo)
         codigo_actual = row_data[0]
         producto_nombre = row_data[1]
         stock_actual = int(row_data[3])
@@ -163,20 +210,13 @@ class InventoryView(QWidget, Ui_Form):
         
         # EL CAMBIO ESTÁ AQUÍ:
         # Mínimo 0 (no puede ser negativo)
+        
         # Máximo 'stock_actual' (no puede subir del valor que ya tiene)
         spin_stock.setRange(0, stock_actual) 
         
         spin_stock.setValue(stock_actual)
         spin_stock.setAlignment(Qt.AlignCenter)
         layout.addWidget(spin_stock)
-
-        # --- Campo: Stock Mínimo ---
-        layout.addWidget(QLabel("Stock Mínimo:"))
-        spin_min = QSpinBox()
-        spin_min.setRange(0, 9999)
-        spin_min.setValue(stock_min_actual)
-        spin_min.setAlignment(Qt.AlignCenter)
-        layout.addWidget(spin_min)
 
         buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         buttons.accepted.connect(dialog.accept)
@@ -194,12 +234,16 @@ class InventoryView(QWidget, Ui_Form):
                 nuevo_codigo_int = int(nuevo_codigo_str)
                 nueva_cantidad = spin_stock.value()
                 
-                nuevo_minimo = spin_min.value()
+                # FALTA: Definir spin_min
+                # Si necesitas editar el stock mínimo, agrega el campo
+                # Por ahora, mantenemos el mismo stock mínimo
+                nuevo_minimo = stock_min_actual
 
                 self.save_changes(codigo_actual, nuevo_codigo_int, nueva_cantidad, nuevo_minimo)
                 
             except ValueError:
                 QMessageBox.warning(self, "Error", "El código debe ser un valor numérico.")
+    
     def save_changes(self, cod_viejo, cod_nuevo, cant_nueva, min_nuevo):
         # Aseguramos que los códigos sean tratados correctamente
         cod_viejo = int(cod_viejo)

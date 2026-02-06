@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './app/windows/ui/providersRegistration.ui'
+# Form implementation generated from reading ui file './app/windows/ui/providersRegistration2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -14,8 +14,24 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(996, 694)
-        Form.setStyleSheet("#mainWindow {\n"
+        Form.resize(1385, 963)
+        Form.setStyleSheet("#lineFake, #lineEditTelefonoEmpresa_2{\n"
+"    background: white;\n"
+"    border-radius: 4px;\n"
+"    padding: 6px;\n"
+"    border: 1px solid #c4c4c4;\n"
+"    font-size: 20px;\n"
+"background-color:transparent;\n"
+"border:none;\n"
+"}\n"
+"#comboBox{\n"
+"    border-radius: 4px;\n"
+"    padding: 6px;\n"
+"    border: 1px solid #c4c4c4;\n"
+"    font-size: 20px;\n"
+"border:none;\n"
+"}\n"
+"#mainWindow {\n"
 "    font-family: Arial;\n"
 "}\n"
 "\n"
@@ -29,7 +45,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "#menu {\n"
-"    background: #907c83;\n"
+"    background: #eee;\n"
 "    border-bottom: 1.5px solid #bdbdbd;\n"
 "}\n"
 "\n"
@@ -106,7 +122,7 @@ class Ui_Form(object):
 "\n"
 "\n"
 "QTableWidget {\n"
-"    background: #ededed;\n"
+"    background: #eee;\n"
 "    gridline-color: transparent;\n"
 "    border-radius: 8px;\n"
 "    font-size: 14px;\n"
@@ -114,9 +130,7 @@ class Ui_Form(object):
 "}\n"
 "\n"
 "QHeaderView::section {\n"
-"    background: #EDEDED;\n"
-"    gridline-color: transparent;\n"
-
+"    background: #eee;\n"
 "    padding: 6px 4px;\n"
 "    font-weight: bold;\n"
 "    border: 1px solid #b4b4b4;\n"
@@ -217,25 +231,74 @@ class Ui_Form(object):
         self.horizontalLayout_4.setSpacing(45)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_4.setContentsMargins(-1, -1, -1, 0)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         spacerItem1 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.verticalLayout_4.addItem(spacerItem1)
         self.labelDatos = QtWidgets.QLabel(self.panelRegistro)
-        self.labelDatos.setAlignment(QtCore.Qt.AlignCenter)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.labelDatos.sizePolicy().hasHeightForWidth())
         self.labelDatos.setSizePolicy(sizePolicy)
         self.labelDatos.setMaximumSize(QtCore.QSize(16777215, 20))
+        font = QtGui.QFont()
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setWeight(75)
+        self.labelDatos.setFont(font)
+        self.labelDatos.setTextFormat(QtCore.Qt.MarkdownText)
+        self.labelDatos.setAlignment(QtCore.Qt.AlignCenter)
         self.labelDatos.setObjectName("labelDatos")
         self.verticalLayout_4.addWidget(self.labelDatos)
         spacerItem2 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         self.verticalLayout_4.addItem(spacerItem2)
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_5.setSpacing(36)
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setContentsMargins(60, -1, 60, -1)
+        self.horizontalLayout.setSpacing(40)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_3.setContentsMargins(-1, -1, 0, -1)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_7.setSpacing(6)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_7.addItem(spacerItem3)
+        self.label_7 = QtWidgets.QLabel(self.panelRegistro)
+        self.label_7.setObjectName("label_7")
+        self.verticalLayout_7.addWidget(self.label_7)
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_6.setContentsMargins(-1, -1, -1, 0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.comboBox = QtWidgets.QComboBox(self.panelRegistro)
+        self.comboBox.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.comboBox.setStyleSheet(" text-align: center;\n"
+"color:black;\n"
+"background-color:white;\n"
+"")
+        self.comboBox.setInsertPolicy(QtWidgets.QComboBox.InsertAtBottom)
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.horizontalLayout_6.addWidget(self.comboBox)
+        self.lineEditRIFEmpresa = QtWidgets.QLineEdit(self.panelRegistro)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lineEditRIFEmpresa.sizePolicy().hasHeightForWidth())
+        self.lineEditRIFEmpresa.setSizePolicy(sizePolicy)
+        self.lineEditRIFEmpresa.setMinimumSize(QtCore.QSize(0, 50))
+        self.lineEditRIFEmpresa.setObjectName("lineEditRIFEmpresa")
+        self.horizontalLayout_6.addWidget(self.lineEditRIFEmpresa)
+        self.verticalLayout_7.addLayout(self.horizontalLayout_6)
+        spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_7.addItem(spacerItem4)
+        self.label_11 = QtWidgets.QLabel(self.panelRegistro)
+        self.label_11.setObjectName("label_11")
+        self.verticalLayout_7.addWidget(self.label_11)
         self.lineEditNameEmpresa = QtWidgets.QLineEdit(self.panelRegistro)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -244,7 +307,12 @@ class Ui_Form(object):
         self.lineEditNameEmpresa.setSizePolicy(sizePolicy)
         self.lineEditNameEmpresa.setMinimumSize(QtCore.QSize(0, 50))
         self.lineEditNameEmpresa.setObjectName("lineEditNameEmpresa")
-        self.verticalLayout_5.addWidget(self.lineEditNameEmpresa)
+        self.verticalLayout_7.addWidget(self.lineEditNameEmpresa)
+        spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_7.addItem(spacerItem5)
+        self.label_12 = QtWidgets.QLabel(self.panelRegistro)
+        self.label_12.setObjectName("label_12")
+        self.verticalLayout_7.addWidget(self.label_12)
         self.lineEditDireccionEmpresa = QtWidgets.QLineEdit(self.panelRegistro)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -253,16 +321,23 @@ class Ui_Form(object):
         self.lineEditDireccionEmpresa.setSizePolicy(sizePolicy)
         self.lineEditDireccionEmpresa.setMinimumSize(QtCore.QSize(0, 50))
         self.lineEditDireccionEmpresa.setObjectName("lineEditDireccionEmpresa")
-        self.verticalLayout_5.addWidget(self.lineEditDireccionEmpresa)
-        self.lineEditCorreoEmpresa = QtWidgets.QLineEdit(self.panelRegistro)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lineEditCorreoEmpresa.sizePolicy().hasHeightForWidth())
-        self.lineEditCorreoEmpresa.setSizePolicy(sizePolicy)
-        self.lineEditCorreoEmpresa.setMinimumSize(QtCore.QSize(0, 50))
-        self.lineEditCorreoEmpresa.setObjectName("lineEditCorreoEmpresa")
-        self.verticalLayout_5.addWidget(self.lineEditCorreoEmpresa)
+        self.verticalLayout_7.addWidget(self.lineEditDireccionEmpresa)
+        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_7.addItem(spacerItem6)
+        self.verticalLayout_7.setStretch(0, 1)
+        self.verticalLayout_7.setStretch(3, 1)
+        self.verticalLayout_7.setStretch(6, 1)
+        self.verticalLayout_7.setStretch(9, 1)
+        self.verticalLayout_3.addLayout(self.verticalLayout_7)
+        self.horizontalLayout.addLayout(self.verticalLayout_3)
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_5.setSpacing(6)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        spacerItem7 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_5.addItem(spacerItem7)
+        self.label_5 = QtWidgets.QLabel(self.panelRegistro)
+        self.label_5.setObjectName("label_5")
+        self.verticalLayout_5.addWidget(self.label_5)
         self.lineEditTelefonoEmpresa = QtWidgets.QLineEdit(self.panelRegistro)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -272,68 +347,55 @@ class Ui_Form(object):
         self.lineEditTelefonoEmpresa.setMinimumSize(QtCore.QSize(0, 50))
         self.lineEditTelefonoEmpresa.setObjectName("lineEditTelefonoEmpresa")
         self.verticalLayout_5.addWidget(self.lineEditTelefonoEmpresa)
-        self.lineEditRIFEmpresa = QtWidgets.QLineEdit(self.panelRegistro)
+        spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_5.addItem(spacerItem8)
+        self.label_4 = QtWidgets.QLabel(self.panelRegistro)
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout_5.addWidget(self.label_4)
+        self.lineEditCorreoEmpresa = QtWidgets.QLineEdit(self.panelRegistro)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lineEditRIFEmpresa.sizePolicy().hasHeightForWidth())
-        self.lineEditRIFEmpresa.setSizePolicy(sizePolicy)
-        self.lineEditRIFEmpresa.setMinimumSize(QtCore.QSize(0, 50))
-        self.lineEditRIFEmpresa.setObjectName("lineEditRIFEmpresa")
-        self.verticalLayout_5.addWidget(self.lineEditRIFEmpresa)
+        sizePolicy.setHeightForWidth(self.lineEditCorreoEmpresa.sizePolicy().hasHeightForWidth())
+        self.lineEditCorreoEmpresa.setSizePolicy(sizePolicy)
+        self.lineEditCorreoEmpresa.setMinimumSize(QtCore.QSize(0, 50))
+        self.lineEditCorreoEmpresa.setObjectName("lineEditCorreoEmpresa")
+        self.verticalLayout_5.addWidget(self.lineEditCorreoEmpresa)
+        spacerItem9 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_5.addItem(spacerItem9)
+        self.label_6 = QtWidgets.QLabel(self.panelRegistro)
+        self.label_6.setText("")
+        self.label_6.setObjectName("label_6")
+        self.verticalLayout_5.addWidget(self.label_6)
+        self.lineEditTelefonoEmpresa_2 = QtWidgets.QLineEdit(self.panelRegistro)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lineEditTelefonoEmpresa_2.sizePolicy().hasHeightForWidth())
+        self.lineEditTelefonoEmpresa_2.setSizePolicy(sizePolicy)
+        self.lineEditTelefonoEmpresa_2.setMinimumSize(QtCore.QSize(0, 50))
+        self.lineEditTelefonoEmpresa_2.setPlaceholderText("")
+        self.lineEditTelefonoEmpresa_2.setObjectName("lineEditTelefonoEmpresa_2")
+        self.verticalLayout_5.addWidget(self.lineEditTelefonoEmpresa_2)
+        spacerItem10 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_5.addItem(spacerItem10)
         self.verticalLayout_5.setStretch(0, 1)
-        self.verticalLayout_5.setStretch(1, 1)
         self.verticalLayout_5.setStretch(2, 1)
         self.verticalLayout_5.setStretch(3, 1)
-        self.verticalLayout_5.setStretch(4, 100)
-        self.verticalLayout_4.addLayout(self.verticalLayout_5)
-        self.verticalLayout_4.setStretch(1, 1)
-        self.verticalLayout_4.setStretch(3, 100)
+        self.verticalLayout_5.setStretch(6, 1)
+        self.verticalLayout_5.setStretch(9, 1)
+        self.horizontalLayout.addLayout(self.verticalLayout_5)
+        self.verticalLayout_4.addLayout(self.horizontalLayout)
+        self.verticalLayout_4.setStretch(0, 5)
+        self.verticalLayout_4.setStretch(1, 5)
+        self.verticalLayout_4.setStretch(2, 5)
+        self.verticalLayout_4.setStretch(3, 75)
         self.horizontalLayout_4.addLayout(self.verticalLayout_4)
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_3.setSpacing(0)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
-        spacerItem3 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        self.verticalLayout_3.addItem(spacerItem3)
-        self.labelProductos = QtWidgets.QLabel(self.panelRegistro)
-        self.labelProductos.setObjectName("labelProductos")
-        self.verticalLayout_3.addWidget(self.labelProductos)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        self.verticalLayout_3.addItem(spacerItem4)
-        spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_3.addItem(spacerItem5)
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.tableProducto = QtWidgets.QTableWidget(self.panelRegistro)
-        self.tableProducto.setMinimumSize(QtCore.QSize(0, 350))
-        self.tableProducto.setObjectName("tableProducto")
-        self.tableProducto.setColumnCount(4)
-        self.tableProducto.setRowCount(0)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableProducto.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableProducto.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableProducto.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableProducto.setHorizontalHeaderItem(3, item)
-        self.tableProducto.horizontalHeader().setDefaultSectionSize(125)
-        self.tableProducto.horizontalHeader().setMinimumSectionSize(50)
-        self.tableProducto.horizontalHeader().setStretchLastSection(True)
-        self.tableProducto.verticalHeader().setDefaultSectionSize(30)
-        self.verticalLayout_6.addWidget(self.tableProducto)
-        self.verticalLayout_3.addLayout(self.verticalLayout_6)
-        self.verticalLayout_3.setStretch(0, 1)
-        self.verticalLayout_3.setStretch(1, 1)
-        self.verticalLayout_3.setStretch(2, 1)
-        self.verticalLayout_3.setStretch(3, 1)
-        self.verticalLayout_3.setStretch(4, 100)
-        self.horizontalLayout_4.addLayout(self.verticalLayout_3)
         self.verticalLayout_2.addWidget(self.panelRegistro)
-        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_2.addItem(spacerItem6)
+        spacerItem11 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacerItem11)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_5.setContentsMargins(250, 1, 250, 0)
+        self.horizontalLayout_5.setContentsMargins(250, -1, 250, 0)
         self.horizontalLayout_5.setSpacing(60)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.btnCancelar = QtWidgets.QPushButton(Form)
@@ -357,22 +419,21 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.labelTituloProveedores.setText(_translate("Form", "Registrar Proveedor"))
+        self.labelTituloProveedores.setText(_translate("Form", "Registro de proveedores"))
         self.labelDatos.setText(_translate("Form", "Datos de la empresa"))
-        self.lineEditNameEmpresa.setPlaceholderText(_translate("Form", "Nombre de la empresa"))
-        self.lineEditDireccionEmpresa.setPlaceholderText(_translate("Form", "Dirección de la empresa"))
-        self.lineEditCorreoEmpresa.setPlaceholderText(_translate("Form", "Correo"))
-        self.lineEditTelefonoEmpresa.setPlaceholderText(_translate("Form", "Teléfono"))
-        self.lineEditRIFEmpresa.setPlaceholderText(_translate("Form", "RIF"))
-        self.labelProductos.setText(_translate("Form", "Productos"))
-        item = self.tableProducto.horizontalHeaderItem(0)
-        item.setText(_translate("Form", "Producto"))
-        item = self.tableProducto.horizontalHeaderItem(1)
-        item.setText(_translate("Form", "Stock"))
-        item = self.tableProducto.horizontalHeaderItem(2)
-        item.setText(_translate("Form", "Precio unitario"))
-        item = self.tableProducto.horizontalHeaderItem(3)
-        item.setText(_translate("Form", "Borrar"))
+        self.label_7.setText(_translate("Form", "RIF"))
+        self.comboBox.setItemText(0, _translate("Form", "V"))
+        self.comboBox.setItemText(1, _translate("Form", "J"))
+        self.comboBox.setItemText(2, _translate("Form", "G"))
+        self.lineEditRIFEmpresa.setPlaceholderText(_translate("Form", ""))
+        self.label_11.setText(_translate("Form", "Nombre de la Empresa"))
+        self.lineEditNameEmpresa.setPlaceholderText(_translate("Form", ""))
+        self.label_12.setText(_translate("Form", "Dirección de la Empresa"))
+        self.lineEditDireccionEmpresa.setPlaceholderText(_translate("Form", ""))
+        self.label_5.setText(_translate("Form", "Teléfono"))
+        self.lineEditTelefonoEmpresa.setPlaceholderText(_translate("Form", ""))
+        self.label_4.setText(_translate("Form", "Correo"))
+        self.lineEditCorreoEmpresa.setPlaceholderText(_translate("Form", ""))
         self.btnCancelar.setText(_translate("Form", "Cancelar"))
         self.btnGuardar.setText(_translate("Form", "Guardar"))
 
